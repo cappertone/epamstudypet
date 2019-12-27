@@ -1,0 +1,10 @@
+Developer{id=-528257658733379342, skills=[{skillID=3487976895, name='dfgdf'}
+, {skillID=34324535, name='rebwtb'}
+, {skillID=65452, name='dfertdf'}
+], account=Account{accountId=23423, status=INACTIVE}
+}
+Developer{id=4383589446080488632, skills=[{skillID=3245235, name='rwrtbn'}
+, {skillID=8997864, name='GJH'}
+, {skillID=6896789, name='OIPUY'}
+], account=Account{accountId=3498245, status=ACTIVE}
+}

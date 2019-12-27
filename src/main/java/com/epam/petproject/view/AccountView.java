@@ -1,16 +1,15 @@
 package com.epam.petproject.view;
 
-import com.epam.petproject.controller.SkillController;
-import com.epam.petproject.model.Skill;
+import com.epam.petproject.controller.AccountController;
+import com.epam.petproject.model.Account;
+import com.epam.petproject.model.AccountStatus;
 
 import java.util.Scanner;
 
-
-public class SkillView {
-
+public class AccountView {
     private Scanner scanner = new Scanner(System.in);
     private InputOptions inputOption;
-    private SkillController skilController = new SkillController();
+    private AccountController accountController = new AccountController();
 
 
     private InputOptions getUserChoice() {
@@ -29,30 +28,30 @@ public class SkillView {
             if (inputOption == null) {
                 System.out.println("invalid try again");
             } else if (inputOption.equals(InputOptions.GETALL)) {
-                System.out.println( skilController.getElementCollection());
+                System.out.println( accountController.getElementCollection());
             } else if (inputOption.equals(InputOptions.SAVE)) {
-                System.out.println("Enter Value");
-                skilController.save(new Skill(null, scanner.next()));
+                System.out.println("Enter next one : Active , Inactive, Banned");
+                accountController.save(new Account(null, AccountStatus.valueOf(scanner.next().toUpperCase())));
             } else if (inputOption.equals(InputOptions.READ)) {
-                System.out.println(skilController.getElementCollection());
+                System.out.println(accountController.getElementCollection());
             } else if (inputOption.equals(InputOptions.UPDATE)) {
                 System.out.println("Enter element id and new name");
                 Long id = scanner.nextLong();
                 System.out.println("now name");
-                String name = scanner.next();
-                if(!name.equals("")){
-                    skilController.updateElement(new Skill(id,name));
+                String value = scanner.next();
+                if(!value.equals("")){
+                    accountController.updateElement(new Account(id, AccountStatus.valueOf(value)));
                 }
             }else {
                 System.out.println("Enter id");
-                skilController.deleteById(Long.parseLong(scanner.next()));
+                accountController.deleteById(Long.parseLong(scanner.next()));
             }
         }
         scanner.close();
     }
 
     public static void main(String[] args) {
-        SkillView sview = new SkillView();
-        sview.runApp();
+        AccountView accView = new AccountView();
+        accView.runApp();
     }
 }

@@ -7,6 +7,12 @@ public class Developer {
     Set<Skill> skills;
     Account account;
 
+    public Developer(Long id, Set<Skill> skills, Account account) {
+        this.id = id;
+        this.skills = skills;
+        this.account = account;
+    }
+
     public Long getId() {
         return id;
     }
@@ -29,5 +35,14 @@ public class Developer {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Developer{" +
+                "id=" + id +
+                ", skills=" + skills +
+                ", account=" + account +'}'+'\n';
     }
 }

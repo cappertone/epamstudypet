@@ -3,13 +3,18 @@ package com.epam.petproject.repository;
 import com.epam.petproject.model.Skill;
 
 import java.util.Collection;
+import java.util.List;
 
-public interface AccountRepository {
-    Collection<Skill> getElementCollection();
+public interface AccountRepository<T,ID> extends GenericRepository<T,ID> {
 
-    <T> boolean deleteElement(T element);
-
-    <T> boolean createElement(T element);
-
-    <T> boolean updateElement(T element, T value);
+    @Override
+    List<T> getAll();
+    @Override
+    T update(T account);
+    @Override
+    void deleteById(ID id);
+    @Override
+    T save(T account);
+    @Override
+    T getById(ID id);
 }
