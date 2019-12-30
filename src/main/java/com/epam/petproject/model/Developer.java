@@ -3,14 +3,25 @@ package com.epam.petproject.model;
 import java.util.Set;
 
 public class Developer {
-    Long id;
-    Set<Skill> skills;
-    Account account;
+    private Long id;
+    private String name;
+    private Set<Skill> skills;
+    private Account account;
 
-    public Developer(Long id, Set<Skill> skills, Account account) {
+
+    public Developer(Long id, String name, Set<Skill> skills, Account account) {
         this.id = id;
+        this.name = name;
         this.skills = skills;
         this.account = account;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -41,8 +52,9 @@ public class Developer {
     @Override
     public String toString() {
         return "Developer{" +
-                "id=" + id +
-                ", skills=" + skills +
-                ", account=" + account +'}'+'\n';
+                "id=" + id + "," +
+                "name='" + name + "'," +'\n' +
+                "skills=" + skills + "," + '\n' +
+                "account=" + account + '\n' + '}' + '\n';
     }
 }

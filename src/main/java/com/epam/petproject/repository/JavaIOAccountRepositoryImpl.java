@@ -18,10 +18,6 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository<Account, L
     private static final String ACCOUNTFILEPATH = "src/main/resources/files/accounts.txt";
     private static final Path path = Paths.get(ACCOUNTFILEPATH);
 
-    private Long generateID() {
-        return new Random().nextLong();
-    }
-
     public Account parseFromString(String str) {
         return new Account(parseId(str), parseStatus(str));
     }
@@ -80,7 +76,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository<Account, L
     @Override
     public Account update(Account account) {
         Account old = getById(account.getAccountId());
-        deleteById(account.getAccountId());
+        deleteById(old.getAccountId());
         try {
             Files.write(path, account.toString().getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {

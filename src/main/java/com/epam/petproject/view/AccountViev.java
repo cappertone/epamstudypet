@@ -6,11 +6,10 @@ import com.epam.petproject.model.AccountStatus;
 
 import java.util.Scanner;
 
-public class AccountView {
+public class AccountViev {
     private Scanner scanner = new Scanner(System.in);
     private InputOptions inputOption;
     private AccountController accountController = new AccountController();
-
 
     private InputOptions getUserChoice() {
         System.out.println("Select action: " + '\n'
@@ -33,7 +32,8 @@ public class AccountView {
                 System.out.println("Enter next one : Active , Inactive, Banned");
                 accountController.save(new Account(null, AccountStatus.valueOf(scanner.next().toUpperCase())));
             } else if (inputOption.equals(InputOptions.READ)) {
-                System.out.println(accountController.getElementCollection());
+                System.out.println("enter Id");
+                System.out.println(accountController.getById(Long.parseLong(scanner.next())));
             } else if (inputOption.equals(InputOptions.UPDATE)) {
                 System.out.println("Enter element id and new name");
                 Long id = scanner.nextLong();
@@ -51,7 +51,7 @@ public class AccountView {
     }
 
     public static void main(String[] args) {
-        AccountView accView = new AccountView();
+        AccountViev accView = new AccountViev();
         accView.runApp();
     }
 }

@@ -1,7 +1,6 @@
 package com.epam.petproject.view;
 
 import com.epam.petproject.controller.DeveloperController;
-import com.epam.petproject.model.Account;
 import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.model.Developer;
 
@@ -24,36 +23,41 @@ public class DeveloperView {
     }
 
     private void runApp() {
-        while (inputOption == null) {
-            inputOption = getUserChoice();
+        while (inputOption != InputOptions.EXIT) {
             if (inputOption == null) {
                 System.out.println("invalid try again");
+                inputOption = getUserChoice();
             } else if (inputOption.equals(InputOptions.GETALL)) {
                 System.out.println(developerController.getElementCollection());
+                inputOption = getUserChoice();
             } else if (inputOption.equals(InputOptions.SAVE)) {
-                System.out.println("Enter comma separated skills");
-                String skills = scanner.nextLine();
-                System.out.println("Enter next one account status: Active , Inactive, Banned");
-                AccountStatus status = AccountStatus.valueOf(scanner.next().toUpperCase());
-                developerController.save(
-                        new Developer(null, developerController.parseSkills(skills),
-                                new Account(null, status)));
+                System.out.println("Enter developer name");
+                String name = scanner.next();
+                developerController.save(name);
+                inputOption = getUserChoice();
             } else if (inputOption.equals(InputOptions.READ)) {
                 System.out.println("enter id");
-                Long id = Long.parseLong(scanner.next());
-                System.out.println(developerController.getById(id));
+                String id = scanner.next();
+                Developer developer = developerController.getById(id);
+                if (null != developer) {
+                    System.out.println(developer);
+                    inputOption = getUserChoice();
+                } else {
+                    System.out.println("invalid value");
+                    inputOption = InputOptions.READ;
+                }
             } else if (inputOption.equals(InputOptions.UPDATE)) {
-                System.out.println("Enter element id,");
-                Long id = scanner.nextLong();
-                System.out.println("now skill");
-                String value = scanner.next();
-                System.out.println("now account");
-                AccountStatus status = AccountStatus.valueOf(scanner.next().toUpperCase());
-                if (!value.equals("")) {
-                    developerController.updateElement(new Developer(
-                            id, developerController.parseSkills(value),
-                            new Account(null, status)
-                    ));
+                System.out.println("Enter element id");
+                Long id = developerController.getIDfromInput(scanner.next());
+                System.out.println("now choice");
+                String choice = scanner.next();
+                if (id != 0L && !choice.equals("")) {
+                    System.out.println("enter value");
+                    String value = scanner.next();
+                    developerController.updateElement(id,choice,value);
+                } else {
+                    System.out.println("invalid id or empty name");
+                    inputOption = InputOptions.UPDATE;
                 }
             } else {
                 System.out.println("Enter id");

@@ -1,12 +1,4 @@
-{skillID=3490054989627537733, name='FOOtOO'}
-{skillID=-4598316572816335488, name='ert5ioo'}
-{skillID=-8865070428009382812, name='ert5ioo'}
-{skillID=-855413468943034707, name='ert5ioo'}
-{skillID=-5641277098986859597, name='ert5ioo'}
-{skillID=6933797038192393247, name='ert5ioo'}
-{skillID=-5090806537575830359, name='ert5ioo'}
-{skillID=1935767468902019927, name='ero'}
-{skillID=7973681177375373155, name='ert5ioo'}
-{skillID=-8454939452070116220, name='ert5ioo'}
-{skillID=3077396386946103396, name='dfgkj'}
-{skillID=3602458062142848784, name='OLOLO'}
+{skillID=6742429755125674488, name='erert'}
+{skillID=2370851546068549450, name='ewewweer'}
+{skillID=7959397001655660732, name='rtbtb'}
+{skillID=1373940740783896577, name='werwer'}

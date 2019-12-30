@@ -1,8 +1,8 @@
 package com.epam.petproject.repository;
 
+import com.epam.petproject.controller.AccountController;
 import com.epam.petproject.controller.SkillController;
 import com.epam.petproject.model.Account;
-import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.model.Developer;
 import com.epam.petproject.model.Skill;
 
@@ -18,34 +18,44 @@ import java.util.stream.Collectors;
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Developer, Long> {
     private static final String DEVELOPERSFILEPATH = "src/main/resources/files/developers.txt";
     private static final Path path = Paths.get(DEVELOPERSFILEPATH);
+    private AccountController accountController = new AccountController();
 
-    private Long generateID() {
-        return new Random().nextLong();
+
+
+    private Developer parseFromString(String str) {
+        return new Developer(parseId(str), parseName(str), parseSkills(str), parseAccount(str));
     }
 
-    public Developer parseFromString(String str) {
-        return new Developer(parseId(str), parseSkills(str), parseAccount(str));
+    private String parseName(String str) {
+        return str.substring(str.indexOf("name='") + 6, str.indexOf("\',"));
     }
 
     private Long parseId(String str) {
         return Long.parseLong(str.substring(str.indexOf("id=") + 3, str.indexOf(",")));
     }
 
-    public Set<Skill> parseSkills(String str) {
-        SkillController skillController = new SkillController();
-        String skills = str.substring(str.indexOf("skills=") + 8, str.indexOf("],"));
-        Set<String> items = new HashSet<>(Arrays.asList(skills.split("}")));
-        Set<Skill> skillSet = new HashSet<>();
-        for (String s : items) {
-            skillSet.add(skillController.parseSkill(s));
+    private Set<Skill> parseSkills(String str) {
+        try {
+            SkillController skillController = new SkillController();
+            String skills = str.substring(str.indexOf("[")+1, str.indexOf("]"));
+            Set<String> items = new HashSet<>(Arrays.asList(skills.trim().replace(" ","").split(",")));
+            Set<Skill> skillSet = new HashSet<>();
+            for (String l : items) {
+                skillSet.add(skillController.getById(l));
+            }
+            return skillSet;
+        } catch (Exception e) {
+            return null;
         }
-        return skillSet;
     }
 
     private Account parseAccount(String str) {
-        Long id = Long.parseLong(str.substring(str.indexOf("accountId=") + 10, str.indexOf(", status")));
-        String status = str.substring(str.indexOf("status=") + 7, str.lastIndexOf("}"));
-        return new Account(id, AccountStatus.valueOf(status));
+        try {
+            Long id = Long.parseLong(str.substring(str.indexOf("account=") + 8));
+            return accountController.getById(id);
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     @Override
@@ -82,16 +92,30 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Develo
 
     @Override
     public Developer save(Developer developer) {
-        if(null==developer.getId() || null==developer.getAccount().getAccountId()){
+        if (null == developer.getId()) {
             developer.setId(generateID());
-            developer.getAccount().setAccountId(generateID());
         }
         try {
-            Files.write(path, developer.toString().getBytes(), StandardOpenOption.APPEND);
+            Files.write(path, (developerToFile(developer)).getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return developer;
+    }
+
+    private String developerToFile(Developer developer) {
+        String devToString = developer.toString();
+        if (null != developer.getSkills()) {
+            Set<Long> skillsIds = developer.getSkills().stream()
+                    .map(Skill::getSkillId).collect(Collectors.toSet());
+            String skills = devToString.substring(devToString.indexOf("["), devToString.indexOf("]") + 1);
+            return devToString.replace(skills, skillsIds.toString()) + '\n';
+        } else if(null!=developer.getAccount()){
+            String account = devToString.substring(devToString.indexOf("account"), devToString.lastIndexOf("}")-1);
+            String accountdev = "accountID="+developer.getAccount().getAccountId();
+            return devToString.replace(account, accountdev);
+        }
+        return developer.toString();
     }
 
     @Override
@@ -112,12 +136,19 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Develo
     @Override
     public Developer update(Developer developer) {
         Developer old = getById(developer.getId());
-        deleteById(developer.getId());
+        deleteById(old.getId());
         try {
-            Files.write(path, developer.toString().getBytes(), StandardOpenOption.APPEND);
+            Files.write(path, developerToFile(developer).getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return old;
+    }
+
+    public static void main(String[] args) {
+        JavaIODeveloperRepositoryImpl j = new JavaIODeveloperRepositoryImpl();
+        for (int i = 0; i < 50; i++) {
+            System.out.println( j.generateID());
+        }
     }
 }

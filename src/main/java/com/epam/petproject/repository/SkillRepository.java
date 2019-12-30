@@ -1,7 +1,7 @@
 package com.epam.petproject.repository;
 
 
-import com.epam.petproject.model.Skill;
+
 
 import java.util.List;
 

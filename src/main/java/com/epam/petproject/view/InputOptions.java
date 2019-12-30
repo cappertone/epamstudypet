@@ -5,7 +5,8 @@ public enum InputOptions {
     SAVE,
     READ,
     UPDATE,
-    DELETE;
+    DELETE,
+    EXIT;
 
     public static InputOptions parseType(String value) {
         if (value.equalsIgnoreCase(String.valueOf(GETALL))) {
@@ -18,7 +19,11 @@ public enum InputOptions {
             return UPDATE;
         } else if (value.equalsIgnoreCase(String.valueOf(DELETE))) {
             return DELETE;
+        }else if (value.equalsIgnoreCase(String.valueOf(EXIT))) {
+            return EXIT;
         }
         return null;
     }
+
+
 }
