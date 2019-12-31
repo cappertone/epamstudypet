@@ -16,13 +16,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Developer, Long> {
-    private static final String DEVELOPERSFILEPATH = "src/main/resources/files/developers.txt";
-    private static final Path path = Paths.get(DEVELOPERSFILEPATH);
+    private final String DEVELOPERSFILEPATH = "src/main/resources/files/developers.txt";
+    private final Path path = Paths.get(DEVELOPERSFILEPATH);
     private AccountController accountController = new AccountController();
 
 
 
-    private Developer parseFromString(String str) {
+    public Developer parseFromString(String str) {
         return new Developer(parseId(str), parseName(str), parseSkills(str), parseAccount(str));
     }
 

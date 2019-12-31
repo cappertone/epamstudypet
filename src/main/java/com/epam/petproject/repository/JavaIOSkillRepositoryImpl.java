@@ -3,17 +3,14 @@ package com.epam.petproject.repository;
 import com.epam.petproject.model.Skill;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
 
 public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
-    private static final String SKILLFILEPATH = "src/main/resources/files/skills.txt";
-    private static final Path path = Paths.get(SKILLFILEPATH);
+    private  final String SKILLFILEPATH = "src/main/resources/files/skills.txt";
+    private  final Path path = Paths.get(SKILLFILEPATH);
 
     @Override
     public Skill save(Skill skill) {
@@ -27,6 +24,8 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
         }
         return skill;
     }
+
+
 
     @Override
     public List<Skill> getAll() {
@@ -83,7 +82,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
         }
     }
 
-    private Skill parseFromString(String str) {
+    public Skill parseFromString(String str) {
         return new Skill(parseId(str), parseName(str));
     }
 
@@ -92,6 +91,6 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
     }
 
     private String parseName(String str) {
-        return str.substring(str.indexOf("name=") + 6, str.length() - 1);
+        return str.substring(str.indexOf("name=") + 6, str.length() - 2);
     }
 }

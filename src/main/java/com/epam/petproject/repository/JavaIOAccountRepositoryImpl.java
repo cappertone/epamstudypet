@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class JavaIOAccountRepositoryImpl implements AccountRepository<Account, Long> {
-    private static final String ACCOUNTFILEPATH = "src/main/resources/files/accounts.txt";
-    private static final Path path = Paths.get(ACCOUNTFILEPATH);
+    private  final String ACCOUNTFILEPATH = "src/main/resources/files/accounts.txt";
+    private  final Path path = Paths.get(ACCOUNTFILEPATH);
 
     public Account parseFromString(String str) {
         return new Account(parseId(str), parseStatus(str));

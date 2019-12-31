@@ -1,7 +1,6 @@
 package com.epam.petproject.view;
 
 import com.epam.petproject.controller.DeveloperController;
-import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.model.Developer;
 
 import java.util.Scanner;
@@ -49,7 +48,7 @@ public class DeveloperView {
             } else if (inputOption.equals(InputOptions.UPDATE)) {
                 System.out.println("Enter element id");
                 Long id = developerController.getIDfromInput(scanner.next());
-                System.out.println("now choice");
+                System.out.println("now choice: ADDSKILL, REMOVESKILL, ACCOUNT");
                 String choice = scanner.next();
                 if (id != 0L && !choice.equals("")) {
                     System.out.println("enter value");

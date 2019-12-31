@@ -6,7 +6,7 @@ import com.epam.petproject.model.AccountStatus;
 
 import java.util.Scanner;
 
-public class AccountViev {
+public class AccountView {
     private Scanner scanner = new Scanner(System.in);
     private InputOptions inputOption;
     private AccountController accountController = new AccountController();
@@ -51,7 +51,7 @@ public class AccountViev {
     }
 
     public static void main(String[] args) {
-        AccountViev accView = new AccountViev();
+        AccountView accView = new AccountView();
         accView.runApp();
     }
 }
