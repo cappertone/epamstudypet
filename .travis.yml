@@ -1,6 +1,6 @@
 # https://docs.travis-ci.com/user/languages/java/
 language: java
-jdk: oraclejdk9
+jdk: openjdk11
 dist: trusty
 cache:
   directories:
