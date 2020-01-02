@@ -30,7 +30,7 @@ public class DeveloperControllerTest {
 
     @Before
     public void setUp() throws IOException, NoSuchFieldException, IllegalAccessException {
-        File createdFile = folder.newFile("accountsTmp.txt");
+        File createdFile = folder.newFile("developersTmp.txt");
         Path tempPath = Paths.get(createdFile.getPath());
         JavaIODeveloperRepositoryImpl developerRepository = new JavaIODeveloperRepositoryImpl(tempPath);
 
