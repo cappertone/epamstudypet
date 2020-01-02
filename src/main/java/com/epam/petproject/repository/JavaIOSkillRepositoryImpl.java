@@ -9,8 +9,14 @@ import java.util.stream.Collectors;
 
 
 public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
-    private  final String SKILLFILEPATH = "src/main/resources/files/skills.txt";
-    private  final Path path = Paths.get(SKILLFILEPATH);
+    private  String SKILLFILEPATH = "src/main/resources/files/skills.txt";
+    private Path path = Paths.get(SKILLFILEPATH);
+
+    public JavaIOSkillRepositoryImpl() {
+    }
+    public JavaIOSkillRepositoryImpl(Path path){
+        this.path = path;
+    }
 
     @Override
     public Skill save(Skill skill) {
@@ -33,7 +39,9 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
             String line;
             List<Skill> result = new LinkedList<>();
             while ((line = reader.readLine()) != null) {
-                result.add(parseFromString(line));
+                if(!line.equals("")) {
+                    result.add(parseFromString(line));
+                }
             }
             return result;
         } catch (Exception e) {
@@ -48,7 +56,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
             BufferedReader reader = Files.newBufferedReader(path);
             String line;
             while ((line = reader.readLine()) != null) {
-                if (parseId(line).equals(id)) {
+                if (!line.equals("") && parseId(line).equals(id)) {
                     return parseFromString(line);
                 }
             }

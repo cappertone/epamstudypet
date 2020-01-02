@@ -32,8 +32,6 @@ public class DeveloperController {
         choice = choice.toUpperCase().replace(" ","");
         Developer developer = developerRepository.getById(id);
         Set <Skill> skills = new HashSet<>();
-
-
         switch (choice) {
             case "ADDSKILL": {
                 Skill newSkill = skillController.save(value);

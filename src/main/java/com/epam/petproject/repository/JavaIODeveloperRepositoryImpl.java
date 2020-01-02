@@ -17,9 +17,14 @@ import java.util.stream.Collectors;
 
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Developer, Long> {
     private final String DEVELOPERSFILEPATH = "src/main/resources/files/developers.txt";
-    private final Path path = Paths.get(DEVELOPERSFILEPATH);
+    private Path path = Paths.get(DEVELOPERSFILEPATH);
     private AccountController accountController = new AccountController();
 
+    public JavaIODeveloperRepositoryImpl() {
+    }
+    public JavaIODeveloperRepositoryImpl(Path path) {
+        this.path = path;
+    }
 
 
     public Developer parseFromString(String str) {

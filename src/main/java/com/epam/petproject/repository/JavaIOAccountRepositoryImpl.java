@@ -14,8 +14,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class JavaIOAccountRepositoryImpl implements AccountRepository<Account, Long> {
-    private  final String ACCOUNTFILEPATH = "src/main/resources/files/accounts.txt";
-    private  final Path path = Paths.get(ACCOUNTFILEPATH);
+    private final String ACCOUNTFILEPATH = "src/main/resources/files/accounts.txt";
+    private Path path = Paths.get(ACCOUNTFILEPATH);
+
+    public JavaIOAccountRepositoryImpl() {
+    }
+
+    public JavaIOAccountRepositoryImpl(Path path) {
+        this.path = path;
+    }
 
     public Account parseFromString(String str) {
         return new Account(parseId(str), parseStatus(str));
@@ -48,7 +55,8 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository<Account, L
             String line;
             List<Account> result = new LinkedList<>();
             while ((line = reader.readLine()) != null) {
-                result.add(parseFromString(line));
+                if (!line.equals(""))
+                    result.add(parseFromString(line));
             }
             return result;
         } catch (Exception e) {
@@ -62,7 +70,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository<Account, L
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             String line;
             while ((line = reader.readLine()) != null) {
-                if (id.equals(parseId(line))) {
+                if (!line.equals("") && id.equals(parseId(line))) {
                     return parseFromString(line);
                 }
             }
