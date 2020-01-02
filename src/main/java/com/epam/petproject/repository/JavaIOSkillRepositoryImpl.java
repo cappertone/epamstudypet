@@ -90,7 +90,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
         }
     }
 
-    public Skill parseFromString(String str) {
+    private Skill parseFromString(String str) {
         return new Skill(parseId(str), parseName(str));
     }
 

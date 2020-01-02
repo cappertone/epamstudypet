@@ -27,7 +27,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Develo
     }
 
 
-    public Developer parseFromString(String str) {
+    private Developer parseFromString(String str) {
         return new Developer(parseId(str), parseName(str), parseSkills(str), parseAccount(str));
     }
 
