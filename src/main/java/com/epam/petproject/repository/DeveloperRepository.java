@@ -1,7 +1,5 @@
 package com.epam.petproject.repository;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
-
 import java.util.List;
 
 public interface  DeveloperRepository<T, ID> extends GenericRepository<T,ID>{
