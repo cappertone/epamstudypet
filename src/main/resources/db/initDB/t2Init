@@ -1,0 +1,8 @@
+CREATE SCHEMA task_2;
+USE task_2;
+Create table If Not Exists Employee (Id int, Salary int);
+Truncate table Employee;
+insert into Employee (Id, Salary) values ('1', '500');
+insert into Employee (Id, Salary) values ('2', '750');
+insert into Employee (Id, Salary) values ('3', '600');
+

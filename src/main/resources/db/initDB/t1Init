@@ -1,0 +1,20 @@
+CREATE SCHEMA task_1;
+USE task_1;
+CREATE TABLE if not exists Person  (PersonId int, FirstName varchar(255), LastName varchar(255));
+Create table if not exists Address (AddressId int, PersonId int, City varchar(255), State varchar(255));
+Truncate table Person;
+INSERT INTO Person
+(PersonId, LastName, FirstName)
+VALUES
+(1,'Lloyds','John'),
+(2,'Void', 'Jane'),
+(3,'Boyd', 'Billy'),
+(4,'Cole', 'Miranda');
+Truncate table Address;
+INSERT INTO Address
+(AddressId, PersonId, City, State)
+VALUES
+('1', '2', 'New York City','New York'),
+('2', '1', 'Jersey','New Jersey'),
+('3', '3', 'Alaska','Jukon'),
+('4', '4', 'Alaska','Tanana');

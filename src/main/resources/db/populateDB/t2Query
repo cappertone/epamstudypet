@@ -1,0 +1,12 @@
+USE task_2;
+CREATE TABLE IF NOT EXISTS secondSalary  (SecondHighestSalary int);
+Truncate table secondSalary;
+insert into secondSalary(
+        SELECT DISTINCT Salary
+    FROM  employee
+    ORDER BY  Salary DESC
+    LIMIT 1 , 1
+
+);
+
+

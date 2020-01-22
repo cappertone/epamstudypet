@@ -1,0 +1,36 @@
+CREATE SCHEMA IF NOT EXISTS studypet;
+USE studypet;
+CREATE TABLE IF NOT EXISTS Accounts
+(
+    accountId     INT(11),
+    accountStatus ENUM ('ACTIVE', 'BANNED', 'INACTIVE'),
+    PRIMARY KEY (accountId)
+);
+CREATE TABLE IF NOT EXISTS Developers
+(
+    devId     INT(11)      NOT NULL AUTO_INCREMENT,
+    `name`    VARCHAR(255) NOT NULL,
+    accountId INT(11),
+    PRIMARY KEY (devId)
+)
+;
+CREATE TABLE IF NOT EXISTS Skills
+(
+    skID    INT(11)      NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NULL,
+    PRIMARY KEY (skID)
+)
+;
+CREATE TABLE IF NOT EXISTS DeveloperSkills
+(
+    d_id  INT(11) NOT NULL,
+    sk_id INT(11) NOT NULL,
+    PRIMARY KEY (d_id, sk_id),
+    INDEX `devId` (d_id),
+    INDEX `skID` (sk_id),
+    CONSTRAINT `FK_Devs` FOREIGN KEY (sk_id)
+        REFERENCES Skills (skID) ON DELETE CASCADE,
+    CONSTRAINT `FK_Skills` FOREIGN KEY (d_id)
+        REFERENCES Developers (devId) ON DELETE CASCADE
+)
+;
