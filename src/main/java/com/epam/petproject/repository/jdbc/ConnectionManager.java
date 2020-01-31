@@ -9,7 +9,6 @@ import java.util.Properties;
 
 public class ConnectionManager {
     private static final String PROPERTY_PATH = "src/main/resources/properties/db.properties";
-
     private Connection connection = null;
 
     Connection getMYSQLConnection() {

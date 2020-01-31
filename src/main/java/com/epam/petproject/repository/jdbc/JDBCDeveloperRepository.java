@@ -193,21 +193,4 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
             return null;
         }
     }
-
-    public static void main(String[] args) {
-        ConnectionManager connectionManager = new ConnectionManager();
-        JDBCDeveloperRepository developerRepository = new JDBCDeveloperRepository(connectionManager.getMYSQLConnection());
-
-
-        developerRepository.getAll();
-        Developer developer = developerRepository.getById(3L);
-        JDBCSkillRepositoryImpl repository = new JDBCSkillRepositoryImpl(connectionManager.getMYSQLConnection());
-        Skill sk = repository.getById(2L);
-        Set<Skill> devsk = developer.getSkills();
-        devsk.remove(sk);
-        developer.setSkills(devsk);
-        developerRepository.update(developer);
-
-
-    }
-}
+  }

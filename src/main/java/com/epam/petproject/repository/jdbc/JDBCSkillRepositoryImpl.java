@@ -101,21 +101,4 @@ public class JDBCSkillRepositoryImpl implements SkillRepository<Skill, Long> {
         }
         return null;
     }
-
-    public static void main(String[] args) {
-      //  JDBCSkillRepositoryImpl skillRepository = new JDBCSkillRepositoryImpl();
-        // System.out.println(skillRepository.getAll());
-        //  System.out.println(skillRepository.getById(3L));
-        //  skillRepository.save(new Skill(8L, "Hadoop"));
-     //   skillRepository.deleteById(3L);
-//        try{
-//            Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance();
-//            System.out.println("Connection succesfull!");
-//        }
-//        catch(Exception ex){
-//            System.out.println("Connection failed...");
-//
-//            System.out.println(ex);
-//        }
-    }
 }
