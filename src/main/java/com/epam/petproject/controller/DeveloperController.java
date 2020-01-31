@@ -4,7 +4,8 @@ import com.epam.petproject.model.Account;
 import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.model.Developer;
 import com.epam.petproject.model.Skill;
-import com.epam.petproject.repository.JavaIODeveloperRepositoryImpl;
+import com.epam.petproject.repository.DeveloperRepository;
+import com.epam.petproject.service.DeveloperService;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,17 +13,27 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DeveloperController {
-    private JavaIODeveloperRepositoryImpl developerRepository = new JavaIODeveloperRepositoryImpl();
-    private AccountController accountController = new AccountController();
-    private SkillController skillController = new SkillController();
+    private DeveloperService service;
+    private AccountController accountController;
+    private SkillController skillController;
+
+    public DeveloperController(DeveloperService service, AccountController accountController, SkillController skillController) {
+        this.service = service;
+        this.accountController = accountController;
+        this.skillController = skillController;
+    }
+
+    public DeveloperController(DeveloperService service) {
+        this.service = service;
+    }
 
     public List<Developer> getElementCollection() {
-        return developerRepository.getAll();
+        return service.getAll();
     }
 
     public Developer getById(String id) {
         try {
-            return developerRepository.getById(Long.parseLong(id));
+            return service.getbyID(Long.parseLong(id));
         } catch (NumberFormatException e) {
             return null;
         }
@@ -30,7 +41,7 @@ public class DeveloperController {
 
     public Developer updateElement(Long id, String choice, String value) {
         choice = choice.toUpperCase().replace(" ","");
-        Developer developer = developerRepository.getById(id);
+        Developer developer = service.getbyID(id);
         Set <Skill> skills = new HashSet<>();
         switch (choice) {
             case "ADDSKILL": {
@@ -39,16 +50,16 @@ public class DeveloperController {
                 if (null != developer.getSkills()) {
                     skills.addAll(developer.getSkills());
                 }
-                return developerRepository.update(new Developer(id, developer.getName(), skills, developer.getAccount()));
+                return service.update(new Developer(id, developer.getName(), skills, developer.getAccount()));
             }
             case "REMOVESKILL":{
                     if (null != developer.getSkills()) {
                         skills = developer.getSkills().stream()
-                                .filter(skill -> !skill.getSkillId().equals(getIDfromInput(value)))
+                                .filter(skill -> !skill.getSkillID().equals(getIDfromInput(value)))
                                 .collect(Collectors.toSet());
                         System.out.println(skills);
                     }
-                    return developerRepository.update(new Developer(id, developer.getName(), skills, developer.getAccount()));
+                    return service.update(new Developer(id, developer.getName(), skills, developer.getAccount()));
             }
             case "ACCOUNT": {
                 Account account = developer.getAccount();
@@ -59,7 +70,7 @@ public class DeveloperController {
                     account = accountController.save(new Account(null, AccountStatus.valueOf(value)));
                 }
                 developer = new Developer(id, developer.getName(), developer.getSkills(), account);
-                return developerRepository.update(developer);
+                return service.update(developer);
             }
             default:
                 throw new IllegalStateException("Unexpected value: " + choice);
@@ -67,11 +78,11 @@ public class DeveloperController {
     }
 
     public Developer save(String name) {
-        return developerRepository.save(new Developer(null, name, null, null));
+        return service.save(new Developer(null, name, null, null));
     }
 
     public void deleteById(Long id) {
-        developerRepository.deleteById(id);
+        service.delete(id);
     }
 
     public Long getIDfromInput(String input) {

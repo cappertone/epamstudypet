@@ -2,13 +2,15 @@ package com.epam.petproject.view;
 
 import com.epam.petproject.controller.DeveloperController;
 import com.epam.petproject.model.Developer;
+import com.epam.petproject.repository.JavaIODeveloperRepositoryImpl;
+import com.epam.petproject.service.DeveloperService;
 
 import java.util.Scanner;
 
 public class DeveloperView {
     private Scanner scanner = new Scanner(System.in);
     private InputOptions inputOption;
-    private DeveloperController developerController = new DeveloperController();
+    private DeveloperController developerController = new DeveloperController(new DeveloperService(new JavaIODeveloperRepositoryImpl()));
 
 
     private InputOptions getUserChoice() {

@@ -3,13 +3,15 @@ package com.epam.petproject.view;
 import com.epam.petproject.controller.AccountController;
 import com.epam.petproject.model.Account;
 import com.epam.petproject.model.AccountStatus;
+import com.epam.petproject.repository.JavaIOAccountRepositoryImpl;
+import com.epam.petproject.service.AccountService;
 
 import java.util.Scanner;
 
 public class AccountView {
     private Scanner scanner = new Scanner(System.in);
     private InputOptions inputOption;
-    private AccountController accountController = new AccountController();
+    private AccountController accountController = new AccountController(new AccountService(new JavaIOAccountRepositoryImpl()));
 
     private InputOptions getUserChoice() {
         System.out.println("Select action: " + '\n'

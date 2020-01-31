@@ -1,13 +1,14 @@
 package com.epam.petproject.model;
 
-import java.util.Set;
+import lombok.Data;
 
+import java.util.Set;
+@Data
 public class Developer {
     private Long id;
     private String name;
     private Set<Skill> skills;
     private Account account;
-
 
     public Developer(Long id, String name, Set<Skill> skills, Account account) {
         this.id = id;
@@ -15,39 +16,6 @@ public class Developer {
         this.skills = skills;
         this.account = account;
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Set<Skill> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(Set<Skill> skills) {
-        this.skills = skills;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
-
 
     @Override
     public String toString() {

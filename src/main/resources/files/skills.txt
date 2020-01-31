@@ -8,3 +8,5 @@
 {skillID=3761205927424896825, name='JavaScript'}
 {skillID=8613840275013107418, name='JavaScript'}
 {skillID=5131429132322308430, name='JavaScript'}
+{skillID=8037873371517810482, name='JavaScript'}
+{skillID=5083505524366608329, name='JavaScript'}

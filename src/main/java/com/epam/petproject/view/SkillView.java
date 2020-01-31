@@ -1,6 +1,8 @@
 package com.epam.petproject.view;
 
 import com.epam.petproject.controller.SkillController;
+import com.epam.petproject.repository.JavaIOSkillRepositoryImpl;
+import com.epam.petproject.service.SkillService;
 
 import java.util.Scanner;
 
@@ -9,7 +11,7 @@ public class SkillView {
 
     private Scanner scanner = new Scanner(System.in);
     private InputOptions inputOption;
-    private SkillController skillController = new SkillController();
+    private SkillController skillController = new SkillController(new SkillService(new JavaIOSkillRepositoryImpl()));
 
     private InputOptions getUserChoice() {
         System.out.println("Select action: " + '\n'

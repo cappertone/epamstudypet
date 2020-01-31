@@ -72,17 +72,17 @@ public class JavaIOSkillRepositoryImplTest {
     @Test
     public void update() {
         skillRepository.save(skill);
-        Skill newSkill = new Skill(skill.getSkillId(), "ApacheSpark");
+        Skill newSkill = new Skill(skill.getSkillID(), "ApacheSpark");
         skillRepository.update(newSkill);
         Skill resultSkill = skillRepository.getById(342345L);
-        assertEquals(newSkill.getSkillName(), resultSkill.getSkillName());
+        assertEquals(newSkill.getName(), resultSkill.getName());
     }
 
     @Test
     public void deleteById() {
         Skill skillToDelete = new Skill(2345234545344L, "SQL");
         skillList.forEach(skill -> skillRepository.save(skill));
-        skillRepository.deleteById(skillToDelete.getSkillId());
+        skillRepository.deleteById(skillToDelete.getSkillID());
         skillList.remove(2);
         assertEquals(skillList, skillRepository.getAll());
     }

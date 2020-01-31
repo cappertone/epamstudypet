@@ -1,35 +1,17 @@
 package com.epam.petproject.model;
 
+import lombok.Data;
+
 import java.util.Objects;
 
+@Data
 public class Skill {
     private Long skillID;
     private String name;
 
-
     public Skill(Long skillID, String name) {
         this.skillID = skillID;
         this.name = name;
-    }
-
-    private String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSkillName() {
-        return name;
-    }
-
-    public Long getSkillId() {
-        return skillID;
-    }
-
-    public void setSkillId(Long skillId) {
-        this.skillID = skillId;
     }
 
     @Override
@@ -46,9 +28,8 @@ public class Skill {
         return getName().equals(skill.getName()) &&
                 skillID.equals(skill.skillID);
     }
-
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), skillID);
+        return Objects.hash(skillID,name);
     }
 }

@@ -2,34 +2,36 @@ package com.epam.petproject.controller;
 
 
 import com.epam.petproject.model.Account;
-import com.epam.petproject.repository.JavaIOAccountRepositoryImpl;
+import com.epam.petproject.service.AccountService;
 
 import java.util.List;
 
 public class AccountController {
-    private JavaIOAccountRepositoryImpl accountImpl = new JavaIOAccountRepositoryImpl();
+    private AccountService service;
+
+    public AccountController(AccountService service) {
+        this.service = service;
+    }
+
 
     public List<Account> getElementCollection() {
-        return accountImpl.getAll();
+        return service.getAll();
     }
 
     public Account getById(Long id) {
-        return accountImpl.getById(id);
+        return service.getbyID(id);
     }
 
     public Account updateElement(Account account) {
-        return accountImpl.update(account);
+        return service.update(account);
     }
 
     public Account save(Account account) {
-        return accountImpl.save(account);
+        return service.save(account);
     }
 
     public void deleteById(Long id) {
-        accountImpl.deleteById(id);
+        service.delete(id);
     }
 
-    public Account parseAcoount(String str){
-        return accountImpl.parseFromString(str);
-    }
 }

@@ -8,6 +8,7 @@
     <artifactId>EpamStudyPet</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
     <build>
         <plugins>
             <plugin>
@@ -18,8 +19,26 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <configuration>
+                    <propertyFileWillOverride>true</propertyFileWillOverride>
+                    <propertyFile>${basedir}/src/main/resources/properties/liquibase.properties</propertyFile>
+                    <changeLogFile>${basedir}/src/main/resources/db/master.xml</changeLogFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
 
     <dependencies>
         <dependency>
@@ -28,8 +47,54 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>3.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
-
-
+    <profiles>
+        <profile>
+            <id>production</id>
+            <properties>
+                <db.url>jdbc:mysql://127.0.0.1:3306/studypet</db.url>
+                <db.username>root</db.username>
+                <db.password>root</db.password>
+                <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <db.url>jdbc:h2:mem:studypet</db.url>
+                <db.username>ca</db.username>
+                <db.password></db.password>
+                <db.driver>org.h2.Driver</db.driver>
+            </properties>
+        </profile>
+    </profiles>
 </project>

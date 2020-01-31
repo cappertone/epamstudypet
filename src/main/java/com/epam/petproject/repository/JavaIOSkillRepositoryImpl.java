@@ -20,8 +20,8 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
 
     @Override
     public Skill save(Skill skill) {
-        if (null == skill.getSkillId()) {
-            skill.setSkillId(generateID());
+        if (null == skill.getSkillID()) {
+            skill.setSkillID(generateID());
         }
         try {
             Files.write(path, skill.toString().getBytes(), StandardOpenOption.APPEND);
@@ -68,8 +68,8 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository<Skill, Long> {
 
     @Override
     public Skill update(Skill skill) {
-        Skill old = getById(skill.getSkillId());
-        deleteById(old.getSkillId());
+        Skill old = getById(skill.getSkillID());
+        deleteById(old.getSkillID());
         try {
             Files.write(path, skill.toString().getBytes(), StandardOpenOption.APPEND);
         } catch (IOException e) {

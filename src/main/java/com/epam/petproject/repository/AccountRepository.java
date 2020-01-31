@@ -2,6 +2,7 @@ package com.epam.petproject.repository;
 
 import com.epam.petproject.model.Skill;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 

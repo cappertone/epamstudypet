@@ -5,6 +5,8 @@ import com.epam.petproject.controller.SkillController;
 import com.epam.petproject.model.Account;
 import com.epam.petproject.model.Developer;
 import com.epam.petproject.model.Skill;
+import com.epam.petproject.service.AccountService;
+import com.epam.petproject.service.SkillService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +20,7 @@ import java.util.stream.Collectors;
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Developer, Long> {
     private final String DEVELOPERSFILEPATH = "src/main/resources/files/developers.txt";
     private Path path = Paths.get(DEVELOPERSFILEPATH);
-    private AccountController accountController = new AccountController();
+    private AccountController accountController = new AccountController( new AccountService(new JavaIOAccountRepositoryImpl()));
 
     public JavaIODeveloperRepositoryImpl() {
     }
@@ -41,7 +43,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Develo
 
     private Set<Skill> parseSkills(String str) {
         try {
-            SkillController skillController = new SkillController();
+            SkillController skillController = new SkillController(new SkillService(new JavaIOSkillRepositoryImpl()));
             String skills = str.substring(str.indexOf("[")+1, str.indexOf("]"));
             Set<String> items = new HashSet<>(Arrays.asList(skills.trim().replace(" ","").split(",")));
             Set<Skill> skillSet = new HashSet<>();
@@ -112,7 +114,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository<Develo
         String devToString = developer.toString();
         if (null != developer.getSkills()) {
             Set<Long> skillsIds = developer.getSkills().stream()
-                    .map(Skill::getSkillId).collect(Collectors.toSet());
+                    .map(Skill::getSkillID).collect(Collectors.toSet());
             String skills = devToString.substring(devToString.indexOf("["), devToString.indexOf("]") + 1);
             return devToString.replace(skills, skillsIds.toString()) + '\n';
         } else if(null!=developer.getAccount()){

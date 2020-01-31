@@ -2,18 +2,25 @@ package com.epam.petproject.controller;
 
 import com.epam.petproject.model.Skill;
 import com.epam.petproject.repository.JavaIOSkillRepositoryImpl;
+import com.epam.petproject.repository.SkillRepository;
+import com.epam.petproject.service.SkillService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class SkillController {
-    private JavaIOSkillRepositoryImpl repoImpl = new JavaIOSkillRepositoryImpl();
+    private SkillService service;
+
+    public SkillController(SkillService service) {
+        this.service = service;
+    }
 
     public List<Skill> getElementCollection() {
-        return repoImpl.getAll();
+        return service.getAll();
     }
 
     public Skill getById(String id) {
-        Skill skill = repoImpl.getById(getIDfromInput(id));
+        Skill skill = service.getbyID(getIDfromInput(id));
         if (getIDfromInput(id) != 0L) {
             return skill;
         }
@@ -21,11 +28,10 @@ public class SkillController {
         return null;
     }
 
-
     public Skill updateElement(String id, String value) {
         try {
             if (getIDfromInput(id) != 0L && !value.equals("")) {
-                return repoImpl.update(new Skill(getIDfromInput(id), value));
+                return service.update(new Skill(getIDfromInput(id), value));
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -35,11 +41,11 @@ public class SkillController {
     }
 
     public Skill save(String input) {
-        return repoImpl.save(new Skill(null, input));
+        return service.save(new Skill(null, input));
     }
 
     public void deleteById(String input) {
-        repoImpl.deleteById(getIDfromInput(input));
+        service.delete(getIDfromInput(input));
     }
 
     private Long getIDfromInput(String input) {
