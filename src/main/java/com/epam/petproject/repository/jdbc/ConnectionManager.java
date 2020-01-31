@@ -8,11 +8,12 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionManager {
+    private static final String PROPERTY_PATH = "src/main/resources/properties/db.properties";
 
     private Connection connection = null;
 
     Connection getMYSQLConnection() {
-         try(FileReader reader = new FileReader("src/main/resources/properties/db.properties")) {
+         try(FileReader reader = new FileReader(PROPERTY_PATH)) {
             Properties properties = new Properties();
             properties.load(reader);
             String driver = properties.getProperty("jdbc.driver");
@@ -31,7 +32,7 @@ public class ConnectionManager {
     }
 
     public Connection getH2Connection() {
-        try(FileReader reader = new FileReader("db.properties")) {
+        try(FileReader reader = new FileReader(PROPERTY_PATH)) {
             Properties properties = new Properties();
             properties.load(reader);
             String driver = properties.getProperty("h2.driver");
