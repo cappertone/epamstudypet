@@ -1,8 +1,8 @@
 USE studypet;
 # Select developers by skill id
 SELECT * FROM  `developer-skills` RIGHT JOIN developers
-                                         ON ID = d_id
-WHERE `developer-skills`.sk_id = 4;
+                                         ON ID = developer_id
+WHERE `developer-skills`.skill_id = 4;
 
 #Delete skill from all developers
 DELETE FROM skills

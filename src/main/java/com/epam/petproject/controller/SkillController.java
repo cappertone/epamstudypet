@@ -1,11 +1,8 @@
 package com.epam.petproject.controller;
 
 import com.epam.petproject.model.Skill;
-import com.epam.petproject.repository.JavaIOSkillRepositoryImpl;
-import com.epam.petproject.repository.SkillRepository;
 import com.epam.petproject.service.SkillService;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class SkillController {

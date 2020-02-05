@@ -91,7 +91,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
         return developer;
     }
 
-    public Set<Skill> getSkillSet(Developer developer) throws SQLException, ClassNotFoundException {
+    public Set<Skill> getSkillSet(Developer developer) throws SQLException{
         @SuppressWarnings("SqlResolve") String skillquery = "SELECT skill_id FROM `developer-skills` WHERE developer_id = ?";
         PreparedStatement statementSkills = connection.prepareStatement(skillquery);
         statementSkills.setLong(1, developer.getId());

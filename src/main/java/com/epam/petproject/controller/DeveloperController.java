@@ -4,7 +4,6 @@ import com.epam.petproject.model.Account;
 import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.model.Developer;
 import com.epam.petproject.model.Skill;
-import com.epam.petproject.repository.DeveloperRepository;
 import com.epam.petproject.service.DeveloperService;
 
 import java.util.HashSet;

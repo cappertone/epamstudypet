@@ -21,16 +21,4 @@ public enum AccountStatus {
     };
 
     public abstract String parseType(AccountStatus accountStatus);
-//
-//
-//    public static Options parseType(String value) {
-//        if (value.equalsIgnoreCase(String.valueOf(ROCK))) {
-//            return ROCK;
-//        } else if (value.equalsIgnoreCase(String.valueOf(PAPER))) {
-//            return PAPER;
-//        } else if (value.equalsIgnoreCase(String.valueOf(SCISSORS))) {
-//            return SCISSORS;
-//        }
-//        return null;
-//    }
 }

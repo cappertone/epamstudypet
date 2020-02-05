@@ -1,6 +1,6 @@
 USE task_2;
 CREATE TABLE IF NOT EXISTS secondSalary  (SecondHighestSalary int);
-Truncate table secondSalary;
+TRUNCATE TABLE secondSalary;
 insert into secondSalary(
         SELECT DISTINCT Salary
     FROM  employee

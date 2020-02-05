@@ -8,7 +8,9 @@
     <artifactId>EpamStudyPet</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
+    <properties>
+        <basedir>/src/main/</basedir>
+    </properties>
     <build>
         <plugins>
             <plugin>
@@ -24,8 +26,14 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <configuration>
                     <propertyFileWillOverride>true</propertyFileWillOverride>
-                    <propertyFile>${basedir}/src/main/resources/properties/liquibase.properties</propertyFile>
-                    <changeLogFile>${basedir}/src/main/resources/db/master.xml</changeLogFile>
+                    <propertyFile>${basedir}/resources/properties/liquibase.properties</propertyFile>
+                    <changeLogFile>${basedir}/resources/db/master.xml</changeLogFile>
+                    <diffChangeLogFile>${basedir}/resources/db/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
+                    <driver>com.mysql.jdbc.Driver</driver>
+                    <url>jdbc:mysql://localhost:3306/ng2</url>
+                    <defaultSchemaName>ng2</defaultSchemaName>
+                    <username>root</username>
+                    <password>root</password>
                 </configuration>
                 <executions>
                     <execution>
