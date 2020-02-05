@@ -67,8 +67,8 @@
                     <changeLogFile>${basedir}/resources/db/master.xml</changeLogFile>
                     <diffChangeLogFile>${basedir}/resources/db/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/ng2</url>
-                    <defaultSchemaName>ng2</defaultSchemaName>
+                    <url>jdbc:mysql://localhost:3306/studypet</url>
+                    <defaultSchemaName>studypet</defaultSchemaName>
                     <username>root</username>
                     <password>root</password>
                 </configuration>
