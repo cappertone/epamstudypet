@@ -6,6 +6,7 @@ import com.epam.petproject.model.Developer;
 import com.epam.petproject.model.Skill;
 import com.epam.petproject.repository.DeveloperRepository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -14,10 +15,11 @@ import java.util.Set;
 
 public class JDBCDeveloperRepository implements DeveloperRepository<Developer, Long> {
     private Connection connection;
-    private JDBCSkillRepositoryImpl skillRepository = new JDBCSkillRepositoryImpl(new ConnectionManager().getMYSQLConnection());
+    private DataSource dataSource;
+    private JDBCSkillRepositoryImpl skillRepository = new JDBCSkillRepositoryImpl(new ConnectionFactory().getMySQLDataSource());
 
-    public JDBCDeveloperRepository(Connection connection) {
-        this.connection = connection;
+    public JDBCDeveloperRepository(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -91,7 +93,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
         return developer;
     }
 
-    public Set<Skill> getSkillSet(Developer developer) throws SQLException{
+    public Set<Skill> getSkillSet(Developer developer) throws SQLException {
         @SuppressWarnings("SqlResolve") String skillquery = "SELECT skill_id FROM `developer-skills` WHERE developer_id = ?";
         PreparedStatement statementSkills = connection.prepareStatement(skillquery);
         statementSkills.setLong(1, developer.getId());
@@ -107,7 +109,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
     @Override
     public void deleteById(Long aLong) {
         try {
-            @SuppressWarnings("SqlResolve")String sql = "DELETE FROM studypet.developers WHERE ID = ?";
+            @SuppressWarnings("SqlResolve") String sql = "DELETE FROM studypet.developers WHERE ID = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             connection.setAutoCommit(false);
             statement.setLong(1, aLong);
@@ -193,4 +195,4 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
             return null;
         }
     }
-  }
+}

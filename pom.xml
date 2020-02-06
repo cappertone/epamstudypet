@@ -15,6 +15,8 @@
         <lombok.version>1.18.10</lombok.version>
         <liquibase.version>3.8.5</liquibase.version>
         <h2.version>1.4.200</h2.version>
+        <db.init>db/initDB/studyPetDBInit.sql</db.init>
+        <db.filling>db/initDB/studyPetDataFilling.sql</db.filling>
     </properties>
 
     <dependencies>
@@ -51,6 +53,12 @@
             <artifactId>h2</artifactId>
             <version>${h2.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>
@@ -103,9 +111,14 @@
         <profile>
             <id>test</id>
             <properties>
-                <db.url>jdbc:h2:mem:studypet</db.url>
+                <db.url>jdbc:h2:mem:studypet;
+                    INIT=create schema if not exists studypet\;runscript from ${db.init};
+                    runscript from ${db.filling};
+                    DB_CLOSE_DELAY=-1
+                </db.url>
                 <db.username>ca</db.username>
                 <db.driver>org.h2.Driver</db.driver>
+
             </properties>
         </profile>
     </profiles>

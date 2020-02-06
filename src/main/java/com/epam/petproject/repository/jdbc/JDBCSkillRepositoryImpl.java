@@ -2,15 +2,18 @@ package com.epam.petproject.repository.jdbc;
 
 import com.epam.petproject.model.Skill;
 import com.epam.petproject.repository.SkillRepository;
+
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 public class JDBCSkillRepositoryImpl implements SkillRepository<Skill, Long> {
     private Connection connection;
+    private DataSource dataSource;
 
-    public JDBCSkillRepositoryImpl(Connection connection) {
-        this.connection = connection;
+    public JDBCSkillRepositoryImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override

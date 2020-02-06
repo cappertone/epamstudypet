@@ -8,8 +8,6 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.sql.DriverManager.getConnection;
-
 public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Long> {
     private Connection connection;
 
@@ -25,9 +23,8 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                long id = resultSet.getLong("acccount_id");
+                long id = resultSet.getLong("account_id");
                 AccountStatus status = AccountStatus.valueOf(resultSet.getString("status"));
-                String name = resultSet.getString("status");
                 result.add(new Account(id, status));
             }
         } catch (SQLException e) {
@@ -39,28 +36,28 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
 
     @Override
     public Account update(Account account) {
-            try {
-                @SuppressWarnings("SqlResolve")String sql = "UPDATE studypet.accounts SET status = ? WHERE developer_id =?";
-                PreparedStatement statement = connection.prepareStatement(sql);
-                statement.setLong(1, account.getAccountId());
-                statement.setString(2, account.getStatus().name());
-                statement.executeUpdate();
-                connection.commit();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        try {
+            String sql = "UPDATE studypet.accounts SET status = ? WHERE account_id =?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setLong(1, account.getAccountId());
+            statement.setString(2, account.getStatus().name());
+            statement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return account;
     }
 
     @Override
     public void deleteById(Long aLong) {
         try {
-            @SuppressWarnings("SqlResolve")String sql = "DELETE FROM studypet.accounts WHERE developer_id = ?";
+            String sql = "DELETE FROM studypet.accounts WHERE account_id = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
             connection.setAutoCommit(false);
             statement.setLong(1, aLong);
             statement.executeUpdate();
-            //connection.commit();
+            connection.commit();
         } catch (SQLException e) {
             System.out.println("smth wrong in sql");
             e.printStackTrace();
@@ -88,7 +85,7 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
         Long id = null;
         AccountStatus status = null;
         try {
-            @SuppressWarnings("SqlResolve") String sql = "SELECT * FROM studypet.accounts WHERE developer_id =?";
+            String sql = "SELECT * FROM studypet.accounts WHERE account_id =?";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setLong(1, aLong);
             ResultSet resultSet = statement.executeQuery();
@@ -101,4 +98,11 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
         }
         return (new Account(id, status));
     }
+
+    public static void main(String[] args) {
+//        JDBCAccountRepositotyImpl repositoty = new JDBCAccountRepositotyImpl();
+//        repositoty.getById(2L);
+//        System.out.println("dfdf");
+    }
+
 }
