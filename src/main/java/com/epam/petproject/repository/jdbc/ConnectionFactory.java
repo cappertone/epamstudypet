@@ -1,7 +1,6 @@
 package com.epam.petproject.repository.jdbc;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import org.h2.jdbcx.JdbcDataSource;
 
 import javax.sql.DataSource;
 import java.io.FileInputStream;

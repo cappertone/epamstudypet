@@ -44,8 +44,6 @@ public class JDBCAccountRepositotyImplTest {
             return h2ds;
         }
 
-
-
     @Test
     public void getAll() {
         JDBCAccountRepositotyImpl repositoty = new JDBCAccountRepositotyImpl(connection);
@@ -59,8 +57,8 @@ public class JDBCAccountRepositotyImplTest {
     @Test
     public void deleteById() {
         JDBCAccountRepositotyImpl repositoty = new JDBCAccountRepositotyImpl(connection);
-       // repositoty.deleteById(1L);
-       // assertNull(repositoty.getById(1L));
+        repositoty.deleteById(1L);
+        assertNull(repositoty.getById(1L));
     }
 
     @Test
@@ -71,7 +69,6 @@ public class JDBCAccountRepositotyImplTest {
     public void getById() {
         JDBCAccountRepositotyImpl repositoty = new JDBCAccountRepositotyImpl(connection);
         assertNotNull(repositoty.getById(2L));
-        System.out.println("er");
     }
     @After
     public void close() throws SQLException {

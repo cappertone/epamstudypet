@@ -9,8 +9,11 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <junit.version>4.12</junit.version>
         <mockito.version>3.0.0</mockito.version>
+        <slf4j.version>1.7.24</slf4j.version>
         <mysql.version>8.0.17</mysql.version>
         <lombok.version>1.18.10</lombok.version>
         <liquibase.version>3.8.5</liquibase.version>
@@ -18,8 +21,14 @@
         <db.init>db/initDB/studyPetDBInit.sql</db.init>
         <db.filling>db/initDB/studyPetDataFilling.sql</db.filling>
     </properties>
-
     <dependencies>
+        <!--Logging-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+        <!--Testing-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -32,17 +41,7 @@
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
-        </dependency>
+        <!--JDBC drivers-->
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
@@ -55,11 +54,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.200</version>
-            <scope>compile</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
         </dependency>
+        <!--Other-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>
@@ -78,26 +84,55 @@
                 <version>3.8.5</version>
                 <configuration>
                     <propertyFileWillOverride>true</propertyFileWillOverride>
-                    <propertyFile>src/main/resources/properties/liquibase.properties</propertyFile>
-                    <changeLogFile>src/main/resources/db/master.xml</changeLogFile>
-                    <diffChangeLogFile>src/main/resources/db/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
-                    <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://127.0.0.1:3306/studypet</url>
-                    <defaultSchemaName>studypet</defaultSchemaName>
-                    <username>root</username>
-                    <password>root</password>
+                    <propertyFile>${profile.propertyFile}</propertyFile>
+                    <changeLogFile>${profile.changeLogFile}</changeLogFile>
+                    <dataDir>${profile.dataDir}</dataDir>
+                    <!-- log  -->
+                    <verbose>${profile.verbose}</verbose>
+                    <logging>${profile.logging}</logging>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- Development settings, -Denv=dev -->
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <profile.propertyFile>properties/liquibase.properties</profile.propertyFile>
+                <profile.changeLogFile>db/master.xml</profile.changeLogFile>
+                <profile.dataDir>dev/data</profile.dataDir>
+                <profile.verbose>true</profile.verbose>
+                <profile.logging>debug</profile.logging>
+            </properties>
+        </profile>
+        <!-- Production settings, -Denv=prod -->
+        <profile>
+            <id>test</id>
+            <activation>
+                <property>
+                    <name>env</name>
+                    <value>prod</value>
+                </property>
+            </activation>
+            <properties>
+                <profile.propertyFile>src/test/liquibase.properties</profile.propertyFile>
+                <profile.changeLogFile>src/test/master.xml</profile.changeLogFile>
+                <profile.dataDir>prod/data</profile.dataDir>
+                <profile.verbose>false</profile.verbose>
+                <profile.logging>info</profile.logging>
+            </properties>
+        </profile>
+    </profiles>
+<!--
     <profiles>
         <profile>
             <id>production</id>
@@ -122,4 +157,5 @@
             </properties>
         </profile>
     </profiles>
+    -->
 </project>
