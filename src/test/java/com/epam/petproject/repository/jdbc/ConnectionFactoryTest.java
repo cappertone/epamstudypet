@@ -1,12 +1,10 @@
 package com.epam.petproject.repository.jdbc;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

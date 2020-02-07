@@ -81,15 +81,12 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>3.8.5</version>
+                <version>${liquibase.version}</version>
                 <configuration>
                     <propertyFileWillOverride>true</propertyFileWillOverride>
                     <propertyFile>${profile.propertyFile}</propertyFile>
                     <changeLogFile>${profile.changeLogFile}</changeLogFile>
                     <dataDir>${profile.dataDir}</dataDir>
-                    <!-- log  -->
-                    <verbose>${profile.verbose}</verbose>
-                    <logging>${profile.logging}</logging>
                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                 </configuration>
             </plugin>
@@ -132,30 +129,30 @@
             </properties>
         </profile>
     </profiles>
-<!--
-    <profiles>
-        <profile>
-            <id>production</id>
-            <properties>
-                <db.url>jdbc:mysql://127.0.0.1:3306/studypet</db.url>
-                <db.username>root</db.username>
-                <db.password>root</db.password>
-                <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <db.url>jdbc:h2:mem:studypet;
-                    INIT=create schema if not exists studypet\;runscript from ${db.init};
-                    runscript from ${db.filling};
-                    DB_CLOSE_DELAY=-1
-                </db.url>
-                <db.username>ca</db.username>
-                <db.driver>org.h2.Driver</db.driver>
+    <!--
+        <profiles>
+            <profile>
+                <id>production</id>
+                <properties>
+                    <db.url>jdbc:mysql://127.0.0.1:3306/studypet</db.url>
+                    <db.username>root</db.username>
+                    <db.password>root</db.password>
+                    <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
+                </properties>
+            </profile>
+            <profile>
+                <id>test</id>
+                <properties>
+                    <db.url>jdbc:h2:mem:studypet;
+                        INIT=create schema if not exists studypet\;runscript from ${db.init};
+                        runscript from ${db.filling};
+                        DB_CLOSE_DELAY=-1
+                    </db.url>
+                    <db.username>ca</db.username>
+                    <db.driver>org.h2.Driver</db.driver>
 
-            </properties>
-        </profile>
-    </profiles>
-    -->
+                </properties>
+            </profile>
+        </profiles>
+        -->
 </project>
