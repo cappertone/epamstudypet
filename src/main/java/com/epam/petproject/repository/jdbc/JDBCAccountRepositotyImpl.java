@@ -4,6 +4,7 @@ import com.epam.petproject.model.Account;
 import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.repository.AccountRepository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -104,9 +105,16 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
     }
 
     public static void main(String[] args) {
-//        JDBCAccountRepositotyImpl repositoty = new JDBCAccountRepositotyImpl();
-//        repositoty.getById(2L);
-//        System.out.println("dfdf");
+        DataSource dataSource = new ConnectionFactory().getMySQLDataSource();
+        JDBCAccountRepositotyImpl repositoty = null;
+        try {
+            repositoty = new JDBCAccountRepositotyImpl(dataSource.getConnection());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        repositoty.getById(2L);
+        repositoty.deleteById(2L);
+        System.out.println("dfdf");
     }
 
 }

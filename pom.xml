@@ -99,8 +99,8 @@
             <id>production</id>
             <activation>
                 <property>
-                    <name>env</name>
-                    <value>dev</value>
+                    <name>environment</name>
+                    <value>production</value>
                 </property>
             </activation>
             <properties>
@@ -116,8 +116,8 @@
             <id>test</id>
             <activation>
                 <property>
-                    <name>env</name>
-                    <value>prod</value>
+                    <name>environment</name>
+                    <value>test</value>
                 </property>
             </activation>
             <properties>
@@ -128,5 +128,5 @@
                 <profile.logging>info</profile.logging>
             </properties>
         </profile>
-    </profiles>
+        </profiles>
 </project>

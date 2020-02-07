@@ -68,7 +68,7 @@ public class JDBCAccountRepositotyImplTest {
     @Test
     public void getById() {
         JDBCAccountRepositotyImpl repositoty = new JDBCAccountRepositotyImpl(connection);
-        assertNotNull(repositoty.getById(2L));
+        assertNotNull(repositoty.getById(3L));
     }
     @After
     public void close() throws SQLException {
