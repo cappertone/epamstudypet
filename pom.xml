@@ -106,7 +106,7 @@
             <properties>
                 <profile.propertyFile>properties/liquibase.properties</profile.propertyFile>
                 <profile.changeLogFile>db/master.xml</profile.changeLogFile>
-                <profile.dataDir>dev/data</profile.dataDir>
+                <profile.dataDir>production/data</profile.dataDir>
                 <profile.verbose>true</profile.verbose>
                 <profile.logging>debug</profile.logging>
             </properties>
@@ -123,36 +123,10 @@
             <properties>
                 <profile.propertyFile>src/test/liquibase.properties</profile.propertyFile>
                 <profile.changeLogFile>src/test/master.xml</profile.changeLogFile>
-                <profile.dataDir>prod/data</profile.dataDir>
+                <profile.dataDir>test/data</profile.dataDir>
                 <profile.verbose>false</profile.verbose>
                 <profile.logging>info</profile.logging>
             </properties>
         </profile>
     </profiles>
-    <!--
-        <profiles>
-            <profile>
-                <id>production</id>
-                <properties>
-                    <db.url>jdbc:mysql://127.0.0.1:3306/studypet</db.url>
-                    <db.username>root</db.username>
-                    <db.password>root</db.password>
-                    <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
-                </properties>
-            </profile>
-            <profile>
-                <id>test</id>
-                <properties>
-                    <db.url>jdbc:h2:mem:studypet;
-                        INIT=create schema if not exists studypet\;runscript from ${db.init};
-                        runscript from ${db.filling};
-                        DB_CLOSE_DELAY=-1
-                    </db.url>
-                    <db.username>ca</db.username>
-                    <db.driver>org.h2.Driver</db.driver>
-
-                </properties>
-            </profile>
-        </profiles>
-        -->
 </project>
