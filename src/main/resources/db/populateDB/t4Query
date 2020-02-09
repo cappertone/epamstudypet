@@ -1,4 +1,0 @@
-
-USE task_4;
-SELECT Email FROM Person group by Email having count(*) >= 2
-

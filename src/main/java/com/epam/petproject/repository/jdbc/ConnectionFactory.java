@@ -12,6 +12,7 @@ import java.util.Properties;
 class ConnectionFactory {
     private static final String PROPERTY_PATH = "src/main/resources/properties/db.properties";
 
+
     DataSource getMySQLDataSource(){
         Properties properties = new Properties();
         FileInputStream inputStream;
@@ -29,7 +30,7 @@ class ConnectionFactory {
         return mysqlDS;
     }
 
-    public Connection getConnection(DataSource dataSource) {
+    public Connection getConnection() {
         try {
             return getMySQLDataSource().getConnection();
         } catch (SQLException e) {

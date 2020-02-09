@@ -1,5 +1,0 @@
-USE task_3;
-SELECT employee.Name
-FROM Employee
-         JOIN Employee AS manager ON employee.ManagerId = manager.Id
-WHERE employee.Salary > manager.Salary;

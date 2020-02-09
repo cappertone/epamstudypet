@@ -4,11 +4,10 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
-    <changeSet id="1" author="user">
+    <changeSet id="1" author="author">
         <sqlFile relativeToChangelogFile="true" encoding="utf8" path="initDB/studyPetDBInit.sql"/>
     </changeSet>
-    <changeSet id="2" author="user">
-        <sqlFile relativeToChangelogFile="true" encoding="utf8" path="initDB/studyPetDataFilling.sql"/>
+    <changeSet id="2" author="author">
+        <sqlFile relativeToChangelogFile="true" encoding="utf8" path="populateDB/populate_studypet.sql"/>
     </changeSet>
-
 </databaseChangeLog>

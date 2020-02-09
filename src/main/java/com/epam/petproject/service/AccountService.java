@@ -2,9 +2,10 @@ package com.epam.petproject.service;
 
 import com.epam.petproject.model.Account;
 import com.epam.petproject.repository.AccountRepository;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-
+@Slf4j
 public class AccountService implements GenericService <Account, Long> {
     AccountRepository<Account, Long> repository;
 

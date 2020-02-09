@@ -1,4 +1,0 @@
-USE task_1;
-SELECT FirstName, LastName, City, State
-FROM  person, address
-WHERE person.PersonId = address.PersonId;

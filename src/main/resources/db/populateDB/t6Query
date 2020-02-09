@@ -1,2 +1,0 @@
-USE task_6;
-SELECT class FROM courses GROUP BY class HAVING COUNT(*) > 4;

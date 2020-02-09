@@ -1,7 +1,0 @@
-USE task_5;
-SELECT customers.Name
-FROM customers
-WHERE Id NOT IN
-      (SELECT CustomerId FROM Orders);
-
-

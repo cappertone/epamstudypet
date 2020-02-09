@@ -18,8 +18,6 @@
         <lombok.version>1.18.10</lombok.version>
         <liquibase.version>3.8.5</liquibase.version>
         <h2.version>1.4.200</h2.version>
-        <db.init>db/initDB/studyPetDBInit.sql</db.init>
-        <db.filling>db/initDB/studyPetDataFilling.sql</db.filling>
     </properties>
     <dependencies>
         <!--Logging-->
@@ -83,50 +81,43 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>${liquibase.version}</version>
                 <configuration>
-                    <propertyFileWillOverride>true</propertyFileWillOverride>
                     <propertyFile>${profile.propertyFile}</propertyFile>
                     <changeLogFile>${profile.changeLogFile}</changeLogFile>
-                    <dataDir>${profile.dataDir}</dataDir>
-                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-                </configuration>
+                    <verbose>${profile.verbose}</verbose>
+                    <logging>${profile.logging}</logging>
+               </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                        <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
 
     <profiles>
-        <!-- Development settings, -Denv=dev -->
+        <!-- Development settings, -Denv=prod -->
         <profile>
             <id>production</id>
-            <activation>
-                <property>
-                    <name>environment</name>
-                    <value>production</value>
-                </property>
-            </activation>
             <properties>
-                <profile.propertyFile>properties/liquibase.properties</profile.propertyFile>
+                <profile.propertyFile>src/main/resources/properties/liquibase.properties</profile.propertyFile>
                 <profile.changeLogFile>db/master.xml</profile.changeLogFile>
-                <profile.dataDir>production/data</profile.dataDir>
+                <profile.verbose>false</profile.verbose>
+                <profile.logging>info</profile.logging>
+           </properties>
+        </profile>
+        <!-- Test settings, -Denv=test -->
+        <profile>
+            <id>test</id>
+            <properties>
+                <profile.propertyFile>src/test/java/resources/liquibase.properties</profile.propertyFile>
+                <profile.changeLogFile>db/master.xml</profile.changeLogFile>
                 <profile.verbose>true</profile.verbose>
                 <profile.logging>debug</profile.logging>
             </properties>
         </profile>
-        <!-- Production settings, -Denv=prod -->
-        <profile>
-            <id>test</id>
-            <activation>
-                <property>
-                    <name>environment</name>
-                    <value>test</value>
-                </property>
-            </activation>
-            <properties>
-                <profile.propertyFile>src/test/liquibase.properties</profile.propertyFile>
-                <profile.changeLogFile>src/test/master.xml</profile.changeLogFile>
-                <profile.dataDir>test/data</profile.dataDir>
-                <profile.verbose>false</profile.verbose>
-                <profile.logging>info</profile.logging>
-            </properties>
-        </profile>
-        </profiles>
+    </profiles>
 </project>

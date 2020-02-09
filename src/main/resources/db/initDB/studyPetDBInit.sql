@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS studypet;
+create schema if not exists studypet;
 
-CREATE TABLE IF NOT EXISTS developers
+CREATE TABLE IF NOT EXISTS studypet.developers
 (
     ID   BIGINT       NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -8,19 +8,18 @@ CREATE TABLE IF NOT EXISTS developers
 )
 ;
 
-CREATE TABLE IF NOT EXISTS skills
+CREATE TABLE IF NOT EXISTS studypet.skills
 (
     skill_id BIGINT       NOT NULL PRIMARY KEY,
     name     VARCHAR(255) NULL
 )
 ;
 
-CREATE TABLE IF NOT EXISTS `developer-skills`
+CREATE TABLE IF NOT EXISTS studypet.developer_skills
 (
     developer_id BIGINT NOT NULL,
     skill_id     BIGINT NOT NULL,
     PRIMARY KEY (developer_id, skill_id),
-
     CONSTRAINT `fk-skills` FOREIGN KEY (skill_id)
         REFERENCES skills (skill_id) ON DELETE CASCADE,
     CONSTRAINT `fk-devs` FOREIGN KEY (developer_id)
@@ -28,10 +27,10 @@ CREATE TABLE IF NOT EXISTS `developer-skills`
 )
 ;
 
-CREATE TABLE IF NOT EXISTS accounts
+create table if not exists studypet.accounts
 (
-    account_id BIGINT,
-    status     ENUM ('ACTIVE', 'BANNED', 'INACTIVE'),
-    CONSTRAINT `fk-dev` FOREIGN KEY (account_id)
-        REFERENCES developers (account_id) ON DELETE CASCADE
+    account_id bigint,
+    status     enum ('ACTIVE', 'BANNED', 'INACTIVE'),
+    constraint `fk-dev` foreign key (account_id)
+        references developers (account_id) on delete cascade
 );
