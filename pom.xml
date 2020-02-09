@@ -83,6 +83,7 @@
                 <configuration>
                     <propertyFile>${profile.propertyFile}</propertyFile>
                     <changeLogFile>db/master.xml</changeLogFile>
+                    <diffChangeLogFile>src/main/resources/db/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <verbose>${profile.verbose}</verbose>
                     <logging>${profile.logging}</logging>
                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
