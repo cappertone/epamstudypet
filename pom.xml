@@ -82,9 +82,10 @@
                 <version>${liquibase.version}</version>
                 <configuration>
                     <propertyFile>${profile.propertyFile}</propertyFile>
-                    <changeLogFile>${profile.changeLogFile}</changeLogFile>
+                    <changeLogFile>db/master.xml</changeLogFile>
                     <verbose>${profile.verbose}</verbose>
                     <logging>${profile.logging}</logging>
+                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                </configuration>
                 <executions>
                     <execution>
@@ -102,9 +103,11 @@
         <!-- Development settings, -Denv=prod -->
         <profile>
             <id>production</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
             <properties>
                 <profile.propertyFile>src/main/resources/properties/liquibase.properties</profile.propertyFile>
-                <profile.changeLogFile>db/master.xml</profile.changeLogFile>
                 <profile.verbose>false</profile.verbose>
                 <profile.logging>info</profile.logging>
            </properties>
@@ -114,7 +117,6 @@
             <id>test</id>
             <properties>
                 <profile.propertyFile>src/test/java/resources/liquibase.properties</profile.propertyFile>
-                <profile.changeLogFile>db/master.xml</profile.changeLogFile>
                 <profile.verbose>true</profile.verbose>
                 <profile.logging>debug</profile.logging>
             </properties>
