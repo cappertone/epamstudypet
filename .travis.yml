@@ -4,3 +4,5 @@ dist: trusty
 install: true
 services:
   - mysql
+before_install:
+  - mysql -e 'CREATE DATABASE studypet;'
