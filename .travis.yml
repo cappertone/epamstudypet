@@ -7,3 +7,8 @@ install: true
 services:
   - mysql
 
+test:
+  adapter: mysql2
+  database: studypet
+  username: travis
+  encoding: utf8
