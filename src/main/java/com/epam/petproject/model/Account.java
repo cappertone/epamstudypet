@@ -12,6 +12,10 @@ public class Account {
         this.status = status;
     }
 
+    public Long getAccountId() {
+        return accountId;
+    }
+
     @Override
     public String toString() {
         return "Account{" +

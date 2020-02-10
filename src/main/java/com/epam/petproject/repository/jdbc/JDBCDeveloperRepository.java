@@ -5,8 +5,13 @@ import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.model.Developer;
 import com.epam.petproject.model.Skill;
 import com.epam.petproject.repository.DeveloperRepository;
+import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.sql.ConnectionPoolDataSource;
 import javax.sql.DataSource;
+import javax.sql.PooledConnection;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,7 +21,8 @@ import java.util.Set;
 public class JDBCDeveloperRepository implements DeveloperRepository<Developer, Long> {
     private Connection connection;
     private DataSource dataSource;
-    private JDBCSkillRepositoryImpl skillRepository = new JDBCSkillRepositoryImpl(new ConnectionFactory().getMySQLDataSource());
+    private Logger logger = LoggerFactory.getLogger(JDBCDeveloperRepository.class);
+
 
     public JDBCDeveloperRepository(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -25,16 +31,16 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
     @Override
     public List<Developer> getAll() {
         List<Developer> result = new LinkedList<>();
-        try {
-            @SuppressWarnings("SqlResolve") String sql = "SELECT ID FROM studypet.developers";
+        @SuppressWarnings("SqlResolve") String sql = "SELECT ID FROM studypet.developers";
 
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sql);
+        try (Connection connection = this.dataSource.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
             while (resultSet.next()) {
                 result.add(getById(resultSet.getLong("ID")));
             }
         } catch (SQLException e) {
-            System.out.println("smth wrong in sql");
+            logger.error("cannot get all developers", e);
             e.printStackTrace();
         }
         return result;
@@ -44,25 +50,28 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
     public Developer update(Developer developer) {
         Developer oldDeveloper = getById(developer.getId());
 
-        @SuppressWarnings("SqlResolve") String nameQuery = "UPDATE developers SET name = ? WHERE ID = ?";
-        @SuppressWarnings("SqlResolve") String accountQuery = "UPDATE developers SET account_id = ? WHERE ID = ?";
-        @SuppressWarnings("SqlResolve") String delSkillquery = "DELETE  FROM `developer-skills` WHERE developer_id = ?" +
+        @SuppressWarnings("SqlResolve") String nameQuery = "UPDATE studypet.developers SET name = ? WHERE ID = ?";
+        @SuppressWarnings("SqlResolve") String accountQuery = "UPDATE studypet.developers SET account_id = ? WHERE ID = ?";
+        @SuppressWarnings("SqlResolve") String delSkillquery = "DELETE  FROM studypet.developer_skills WHERE developer_id = ?" +
                 " AND skill_id =?";
-        @SuppressWarnings("SqlResolve") String skillQuery = "INSERT INTO `developer-skills` (developer_id, skill_id) " +
+        @SuppressWarnings("SqlResolve") String skillQuery = "INSERT INTO studypet.developer_skills (developer_id, skill_id) " +
                 "VALUES (?,?)ON DUPLICATE KEY UPDATE developer_id = VALUES(developer_id),\n" +
                 "skill_id = VALUES(skill_id);";
 
-        try {
+        try (Connection connection = this.dataSource.getConnection();
+             PreparedStatement statementName = connection.prepareStatement(nameQuery)) {
+
+
             if (!oldDeveloper.equals(developer)) {
                 if (!oldDeveloper.getName().equals(developer.getName())) {
-                    PreparedStatement statementName = connection.prepareStatement(nameQuery);
+
                     statementName.setString(1, developer.getName());
                     statementName.setLong(2, developer.getId());
                     statementName.executeUpdate();
                 } else if (!oldDeveloper.getAccount().equals(developer.getAccount())) {
                     PreparedStatement statementAccount = connection.prepareStatement(accountQuery);
                     statementAccount.setLong(1, developer.getAccount().getAccountId());
-                    statementAccount.setLong(1, developer.getId());
+                    statementAccount.setLong(2, developer.getId());
                     statementAccount.executeUpdate();
                 } else {
                     PreparedStatement statementSkill = connection.prepareStatement(skillQuery);
@@ -87,69 +96,67 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
                 }
             }
         } catch (SQLException e) {
-            System.out.println("smth wrong in sql");
+            logger.error("cannot update developer", e);
             e.printStackTrace();
         }
         return developer;
     }
 
-    public Set<Skill> getSkillSet(Developer developer) throws SQLException {
-        @SuppressWarnings("SqlResolve") String skillquery = "SELECT skill_id FROM `developer-skills` WHERE developer_id = ?";
-        PreparedStatement statementSkills = connection.prepareStatement(skillquery);
-        statementSkills.setLong(1, developer.getId());
-        ResultSet resultSet = statementSkills.executeQuery();
-        Set<Skill> skillSet = new HashSet<>();
-        while (resultSet.next()) {
-            long id = resultSet.getLong("skill_id");
-            skillSet.add(skillRepository.getById(id));
-        }
-        return skillSet;
-    }
-
     @Override
     public void deleteById(Long aLong) {
-        try {
-            @SuppressWarnings("SqlResolve") String sql = "DELETE FROM studypet.developers WHERE ID = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+        @SuppressWarnings("SqlResolve") String sql = "DELETE FROM studypet.developers WHERE ID = ?";
+
+        try (Connection connection = this.dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             connection.setAutoCommit(false);
             statement.setLong(1, aLong);
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            System.out.println("smth wrong in sql");
+            logger.error("cannot delete developer", e);
             e.printStackTrace();
         }
     }
 
     @Override
     public Developer save(Developer developer) {
-        try {
+        @SuppressWarnings("SqlResolve") String sql = "INSERT INTO studypet.developers VALUES (?,?,?)";
+        @SuppressWarnings("SqlResolve") String skillSetQuery = "INSERT INTO studypet.developer_skills VALUES(?,?)";
+        @SuppressWarnings("SqlResolve") String accountQuery = "INSERT INTO studypet.accounts VALUES (?, ?)";
+
+        try (Connection connection = this.dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             Long id = developer.getId();
             if (id == null) {
                 id = generateID();
             }
-            @SuppressWarnings("SqlResolve") String sql = "INSERT INTO studypet.developers VALUES (?,?,?)";
-            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setLong(1, id);
             statement.setString(2, developer.getName());
-            statement.setLong(3, developer.getAccount().getAccountId());
-            statement.executeUpdate();
-
-            @SuppressWarnings("SqlResolve") String skillSetQuery = "INSERT INTO studypet.`developer-skills` VALUES(?,?)";
-            PreparedStatement statementSkill = connection.prepareStatement(skillSetQuery);
-            statementSkill.setLong(1, developer.getId());
-            for (Skill skill : developer.getSkills()) {
-                statementSkill.setLong(2, skill.getSkillID());
-                statementSkill.executeUpdate();
+            Long accountId = null;
+            Account account = developer.getAccount();
+            if (account != null) {
+                accountId = developer.getAccount().getAccountId();
+                statement.setLong(3, accountId);
+            } else {
+                statement.setNull(3, Types.NULL);
             }
-
-            @SuppressWarnings("SqlResolve") String accountQuery = "INSERT INTO studypet.accounts VALUES (?, ?)";
-            PreparedStatement statementAccount = connection.prepareStatement(accountQuery);
-            statementAccount.setLong(1, developer.getAccount().getAccountId());
-            statementAccount.setString(2, developer.getAccount().getStatus().name());
-
+            statement.executeUpdate();
+            if (developer.getSkills() != null) {
+                PreparedStatement statementSkills = connection.prepareStatement(skillSetQuery);
+                statementSkills.setLong(1, developer.getId());
+                for (Skill skill : developer.getSkills()) {
+                    statementSkills.setLong(2, skill.getSkillID());
+                    statementSkills.executeUpdate();
+                }
+            }
+            if (account != null) {
+                PreparedStatement statementAcc = connection.prepareStatement(accountQuery);
+                statementAcc.setLong(1, developer.getAccount().getAccountId());
+                statementAcc.setString(2, developer.getAccount().getStatus().name());
+                statementAcc.executeUpdate();
+            }
         } catch (SQLException e) {
-            System.out.println("smth wrong in sql");
+            logger.error("cannot save developer", e);
             e.printStackTrace();
         }
         return developer;
@@ -157,11 +164,14 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
 
     @Override
     public Developer getById(Long aLong) {
-        try {
-            @SuppressWarnings("SqlResolve") String sql = "SELECT ID,name,status FROM developers LEFT JOIN accounts skills\n" +
-                    "ON developers.account_id = skills.account_id\n" +
-                    "WHERE developers.ID = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
+        @SuppressWarnings("SqlResolve") String sql = "SELECT id,name,status FROM studypet.developers LEFT JOIN studypet.accounts skills\n" +
+                "ON developers.account_id = skills.account_id\n" +
+                "WHERE developers.id = ?";
+        @SuppressWarnings("SqlResolve") String getSkillsQuery = "SELECT studypet.skills.skill_id, name FROM studypet.developer_skills LEFT JOIN studypet.skills\n" +
+                " ON skills.skill_id = developer_skills.skill_id\n" +
+                "WHERE developer_skills.developer_id = ?";
+        try (Connection connection = this.dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, aLong);
             ResultSet resultSet = statement.executeQuery();
             resultSet.first();
@@ -174,9 +184,6 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
             } else {
                 account = null;
             }
-            @SuppressWarnings("SqlResolve") String getSkillsQuery = "SELECT skills.skill_id, name FROM `developer-skills` LEFT JOIN skills\n" +
-                    " ON skills.skill_id = `developer-skills`.skill_id\n" +
-                    "WHERE `developer-skills`.developer_id = ?";
             PreparedStatement statement1 = connection.prepareStatement(getSkillsQuery);
             statement1.setLong(1, aLong);
             ResultSet resultSkillSet = statement1.executeQuery();
@@ -190,7 +197,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
             return new Developer(id, name, skillSet, account);
 
         } catch (SQLException e) {
-            System.out.println("smth wrong in sql");
+            logger.error("cannot get developer", e);
             e.printStackTrace();
             return null;
         }

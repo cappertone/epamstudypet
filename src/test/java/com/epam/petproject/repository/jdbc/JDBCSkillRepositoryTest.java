@@ -1,8 +1,6 @@
 package com.epam.petproject.repository.jdbc;
 
-import com.epam.petproject.model.Account;
-import com.epam.petproject.model.AccountStatus;
-import com.epam.petproject.model.Developer;
+import com.epam.petproject.model.Skill;
 import org.h2.jdbcx.JdbcDataSource;
 import org.junit.After;
 import org.junit.Before;
@@ -17,13 +15,11 @@ import java.util.Properties;
 
 import static org.junit.Assert.*;
 
-public class JDBCDeveloperRepositoryTest {
+public class JDBCSkillRepositoryTest {
     private Connection connection;
     private static final String PROPERTY_PATH = "src/test/java/resources/db.properties";
-    private JDBCDeveloperRepository repositoty;
+    private JDBCSkillRepository repositoty;
     private DataSource dataSource;
-
-
 
     @Before
     public void init() throws SQLException {
@@ -48,18 +44,16 @@ public class JDBCDeveloperRepositoryTest {
 
     @Test
     public void getAll() {
-        repositoty = new JDBCDeveloperRepository(dataSource);
+        repositoty = new JDBCSkillRepository(dataSource);
         assertNotNull(repositoty.getAll());
     }
 
     @Test
-    public void update()  {
-        repositoty = new JDBCDeveloperRepository(dataSource);
-        Account account = new Account(13L, AccountStatus.ACTIVE);
-
-        Developer developer = new Developer(3L, "Barry", null , account);
-        repositoty.update(developer);
-        assertEquals("Barry", repositoty.getById(3L).getName());
+    public void update() {
+        Skill skill = new Skill(3L, "Slf4j");
+        repositoty = new JDBCSkillRepository(dataSource);
+        repositoty.update(skill);
+        assertEquals(skill, repositoty.getById(3L));
         try {
             connection.rollback();
         } catch (SQLException e) {
@@ -69,7 +63,7 @@ public class JDBCDeveloperRepositoryTest {
 
     @Test
     public void deleteById() {
-        repositoty = new JDBCDeveloperRepository(dataSource);
+        repositoty = new JDBCSkillRepository(dataSource);
         repositoty.deleteById(2L);
         assertNull(repositoty.getById(2L));
         try {
@@ -81,16 +75,17 @@ public class JDBCDeveloperRepositoryTest {
 
     @Test
     public void save() {
-        repositoty = new JDBCDeveloperRepository(dataSource);
-        Developer developer = new Developer(15L, "Miles", null , null);
-        repositoty.save(developer);
-        assertEquals(developer.getName(), repositoty.getById(15L).getName());
+        Skill skill = new Skill(11L, "jsp");
+        repositoty = new JDBCSkillRepository(dataSource);
+        repositoty.save(skill);
+        assertEquals(skill, repositoty.getById(11L));
     }
 
     @Test
     public void getById() {
-        JDBCDeveloperRepository repositoty = new JDBCDeveloperRepository(dataSource);
-        repositoty.getById(1L);
+        repositoty = new JDBCSkillRepository(dataSource);
+        assertNotNull(repositoty.getById(3L));
+
     }
     @After
     public void close() throws SQLException {

@@ -3,16 +3,19 @@ package com.epam.petproject.repository.jdbc;
 import com.epam.petproject.model.Account;
 import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.repository.AccountRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Long> {
+public class JDBCAccountRepositoty implements AccountRepository<Account, Long> {
     private DataSource dataSource;
+    private Logger logger = LoggerFactory.getLogger(JDBCAccountRepositoty.class);
 
-    public JDBCAccountRepositotyImpl(DataSource dataSource) {
+    public JDBCAccountRepositoty(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -29,7 +32,7 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
                 result.add(new Account(id, status));
             }
         } catch (SQLException e) {
-            System.out.println("smth wrong in sql");
+            logger.error("cannot select all accounts", e);
             e.printStackTrace();
         }
         return result;
@@ -44,6 +47,7 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
             statement.setString(1, account.getStatus().name());
             statement.executeUpdate();
         } catch (SQLException e) {
+            logger.error("cannot update account", e);
             e.printStackTrace();
         }
         return account;
@@ -60,7 +64,7 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            System.out.println("del wrong in sql");
+            logger.error("cannot delete account", e);
             e.printStackTrace();
         }
     }
@@ -75,7 +79,7 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
             statement.setString(2, account.getStatus().name());
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("save wrong in sql");
+            logger.error("cannot save account", e);
             e.printStackTrace();
         }
         return account;
@@ -97,22 +101,9 @@ public class JDBCAccountRepositotyImpl implements AccountRepository<Account, Lon
                 result = new Account(id, status);
             }
         } catch (SQLException e) {
-            System.out.println("get wrong in sql");
+            logger.error("cannot get account by id", e);
             e.printStackTrace();
         }
         return result;
     }
-
-    public static void main(String[] args) {
-        ConnectionFactory connectionFactory = new ConnectionFactory();
-
-
-            JDBCAccountRepositotyImpl repositoty = new JDBCAccountRepositotyImpl(connectionFactory.getMySQLDataSource());
-
-            Account account = new Account(1L, AccountStatus.BANNED);
-            repositoty.update(account);
-            System.out.println("df");
-
-    }
-
 }

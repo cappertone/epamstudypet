@@ -9,11 +9,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-class ConnectionFactory {
+public class ConnectionFactory {
     private static final String PROPERTY_PATH = "src/main/resources/properties/db.properties";
 
 
-    DataSource getMySQLDataSource(){
+    public DataSource getMySQLDataSource(){
         Properties properties = new Properties();
         FileInputStream inputStream;
         MysqlDataSource mysqlDS = null;
