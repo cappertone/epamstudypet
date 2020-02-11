@@ -1,3 +1,4 @@
+
 insert into studypet.developers
 values (1, 'Sam',3),
        (2, 'Bob',2),
