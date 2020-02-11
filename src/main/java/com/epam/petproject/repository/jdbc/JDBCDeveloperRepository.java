@@ -5,23 +5,18 @@ import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.model.Developer;
 import com.epam.petproject.model.Skill;
 import com.epam.petproject.repository.DeveloperRepository;
-import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.sql.ConnectionPoolDataSource;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import javax.sql.DataSource;
-import javax.sql.PooledConnection;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
+@Slf4j
 public class JDBCDeveloperRepository implements DeveloperRepository<Developer, Long> {
     private Connection connection;
     private DataSource dataSource;
-    private Logger logger = LoggerFactory.getLogger(JDBCDeveloperRepository.class);
 
 
     public JDBCDeveloperRepository(DataSource dataSource) {
@@ -40,7 +35,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
                 result.add(getById(resultSet.getLong("ID")));
             }
         } catch (SQLException e) {
-            logger.error("cannot get all developers", e);
+            log.error("cannot get all developers", e);
             e.printStackTrace();
         }
         return result;
@@ -60,7 +55,6 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
 
         try (Connection connection = this.dataSource.getConnection();
              PreparedStatement statementName = connection.prepareStatement(nameQuery)) {
-
 
             if (!oldDeveloper.equals(developer)) {
                 if (!oldDeveloper.getName().equals(developer.getName())) {
@@ -96,7 +90,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
                 }
             }
         } catch (SQLException e) {
-            logger.error("cannot update developer", e);
+            log.error("cannot update developer", e);
             e.printStackTrace();
         }
         return developer;
@@ -113,7 +107,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            logger.error("cannot delete developer", e);
+            log.error("cannot delete developer", e);
             e.printStackTrace();
         }
     }
@@ -156,7 +150,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
                 statementAcc.executeUpdate();
             }
         } catch (SQLException e) {
-            logger.error("cannot save developer", e);
+            log.error("cannot save developer", e);
             e.printStackTrace();
         }
         return developer;
@@ -197,7 +191,7 @@ public class JDBCDeveloperRepository implements DeveloperRepository<Developer, L
             return new Developer(id, name, skillSet, account);
 
         } catch (SQLException e) {
-            logger.error("cannot get developer", e);
+            log.error("cannot get developer", e);
             e.printStackTrace();
             return null;
         }

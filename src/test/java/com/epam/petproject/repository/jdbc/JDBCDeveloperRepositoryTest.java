@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 
 public class JDBCDeveloperRepositoryTest {
     private Connection connection;
-    private static final String PROPERTY_PATH = "src/test/java/resources/db.properties";
+    private static final String PROPERTY_PATH = "src/test/java/resources/liquibase.properties";
     private JDBCDeveloperRepository repositoty;
     private DataSource dataSource;
 
@@ -33,9 +33,9 @@ public class JDBCDeveloperRepositoryTest {
             Properties properties = new Properties();
             properties.load(inputStream);
             JdbcDataSource dataSource = new JdbcDataSource();
-            dataSource.setURL(properties.getProperty("db.url"));
-            dataSource.setUser(properties.getProperty("db.login"));
-            dataSource.setPassword(properties.getProperty("db.pass"));
+            dataSource.setURL(properties.getProperty("url"));
+            dataSource.setUser(properties.getProperty("username"));
+            dataSource.setPassword(properties.getProperty("password"));
             this.dataSource = dataSource;
             connection = this.dataSource.getConnection();
             connection.setCatalog("use studypet");
@@ -49,18 +49,18 @@ public class JDBCDeveloperRepositoryTest {
     @Test
     public void getAll() {
         repositoty = new JDBCDeveloperRepository(dataSource);
+        System.out.println(repositoty.getAll());
         assertNotNull(repositoty.getAll());
     }
 
     @Test
     public void update()  {
+        try {
         repositoty = new JDBCDeveloperRepository(dataSource);
         Account account = new Account(13L, AccountStatus.ACTIVE);
-
-        Developer developer = new Developer(3L, "Barry", null , account);
+        Developer developer = new Developer(1L, "Barry", null , account);
         repositoty.update(developer);
         assertEquals("Barry", repositoty.getById(3L).getName());
-        try {
             connection.rollback();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,10 +69,11 @@ public class JDBCDeveloperRepositoryTest {
 
     @Test
     public void deleteById() {
+        try {
         repositoty = new JDBCDeveloperRepository(dataSource);
         repositoty.deleteById(2L);
         assertNull(repositoty.getById(2L));
-        try {
+
             connection.rollback();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,7 +83,7 @@ public class JDBCDeveloperRepositoryTest {
     @Test
     public void save() {
         repositoty = new JDBCDeveloperRepository(dataSource);
-        Developer developer = new Developer(15L, "Miles", null , null);
+        Developer developer = new Developer(1L, "Miles", null , null);
         repositoty.save(developer);
         assertEquals(developer.getName(), repositoty.getById(15L).getName());
     }

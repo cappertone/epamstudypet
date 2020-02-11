@@ -9,8 +9,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectionFactory {
-    private static final String PROPERTY_PATH = "src/main/resources/properties/db.properties";
+public class ConnectionUtil {
+    private static final String PROPERTY_PATH = "src/main/resources/properties/liquibase.properties";
 
 
     public DataSource getMySQLDataSource(){
@@ -21,9 +21,9 @@ public class ConnectionFactory {
             inputStream = new FileInputStream(PROPERTY_PATH);
             properties.load(inputStream);
             mysqlDS = new MysqlDataSource();
-            mysqlDS.setURL(properties.getProperty("db.url"));
-            mysqlDS.setUser(properties.getProperty("db.login"));
-            mysqlDS.setPassword(properties.getProperty("db.pass"));
+            mysqlDS.setURL(properties.getProperty("url"));
+            mysqlDS.setUser(properties.getProperty("username"));
+            mysqlDS.setPassword(properties.getProperty("password"));
         } catch (IOException e) {
             e.printStackTrace();
         }

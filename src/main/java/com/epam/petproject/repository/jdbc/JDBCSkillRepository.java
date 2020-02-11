@@ -2,18 +2,15 @@ package com.epam.petproject.repository.jdbc;
 
 import com.epam.petproject.model.Skill;
 import com.epam.petproject.repository.SkillRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import lombok.extern.slf4j.Slf4j;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
-
+@Slf4j
 public class JDBCSkillRepository implements SkillRepository<Skill, Long> {
     private Connection connection;
     private DataSource dataSource;
-    private Logger logger = LoggerFactory.getLogger(JDBCSkillRepository.class);
 
 
     public JDBCSkillRepository(DataSource dataSource) {
@@ -34,7 +31,7 @@ public class JDBCSkillRepository implements SkillRepository<Skill, Long> {
                 result.add(new Skill(id, name));
             }
         } catch (SQLException e) {
-            logger.error("cannot get all skills", e);
+            log.error("cannot get all skills", e);
             e.printStackTrace();
         }
         return result;
@@ -49,7 +46,7 @@ public class JDBCSkillRepository implements SkillRepository<Skill, Long> {
             statement.setString(1, skill.getName());
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("cannot get update skill", e);
+            log.error("cannot get update skill", e);
             e.printStackTrace();
         }
         return skill;
@@ -65,7 +62,7 @@ public class JDBCSkillRepository implements SkillRepository<Skill, Long> {
             statement.executeUpdate();
             connection.commit();
         } catch (SQLException e) {
-            logger.error("cannot get update skill", e);
+            log.error("cannot get update skill", e);
             e.printStackTrace();
         }
     }
@@ -83,7 +80,7 @@ public class JDBCSkillRepository implements SkillRepository<Skill, Long> {
             statement.setString(2, skill.getName());
             statement.executeUpdate();
         } catch (SQLException e) {
-            logger.error("cannot get update skill", e);
+            log.error("cannot get update skill", e);
             e.printStackTrace();
         }
         return skill;
@@ -103,7 +100,7 @@ public class JDBCSkillRepository implements SkillRepository<Skill, Long> {
             String name = resultSet.getString("name");
             return (new Skill(id, name));
         } catch (SQLException e) {
-            logger.error("cannot get update skill", e);
+            log.error("cannot get update skill", e);
             e.printStackTrace();
         }
         return null;

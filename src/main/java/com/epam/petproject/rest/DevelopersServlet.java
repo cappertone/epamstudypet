@@ -5,12 +5,11 @@ import com.epam.petproject.model.Account;
 import com.epam.petproject.model.AccountStatus;
 import com.epam.petproject.model.Developer;
 import com.epam.petproject.model.Skill;
-import com.epam.petproject.repository.jdbc.ConnectionFactory;
+import com.epam.petproject.repository.jdbc.ConnectionUtil;
 import com.epam.petproject.repository.jdbc.JDBCDeveloperRepository;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,13 +19,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//@WebServlet(name = "DeveloperServlet", urlPatterns = "/developers")
 public class DevelopersServlet extends HttpServlet {
-    private ConnectionFactory factory = new ConnectionFactory();
+    private ConnectionUtil factory = new ConnectionUtil();
     private JDBCDeveloperRepository developerRepository = new JDBCDeveloperRepository(factory.getMySQLDataSource());
     private Gson gson = new Gson();
 
-    //@Override
+    @Override
     protected void doGet(
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
@@ -55,7 +53,7 @@ public class DevelopersServlet extends HttpServlet {
         }
     }
 
-   // @Override
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
@@ -64,7 +62,6 @@ public class DevelopersServlet extends HttpServlet {
             Developer toSave = new Developer(null, name, null, null);
             Developer developer = developerRepository.save(toSave);
             developerJsonString = this.gson.toJson(developer);
-
             PrintWriter out = response.getWriter();
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
@@ -79,14 +76,14 @@ public class DevelopersServlet extends HttpServlet {
         }
     }
 
-  //  @Override
+    @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
 
             String developerJsonString;
             String id = request.getParameter("id");
-            String name = request.getParameter("id");
+            String name = request.getParameter("name");
             String skill = request.getParameter("skills");
             String accountValue = request.getParameter("account");
 
@@ -94,11 +91,10 @@ public class DevelopersServlet extends HttpServlet {
             Set<Skill> skillSet = new HashSet<>();
             skillSet.add(new Skill(null, skill));
             Developer toUpdate = new Developer(Long.parseLong(id),name,skillSet, account);
-            Developer updated = developerRepository.update(toUpdate);
-            developerJsonString = this.gson.toJson(updated);
-            PrintWriter out = response.getWriter();
+            developerJsonString = this.gson.toJson(developerRepository.update(toUpdate));
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
+            PrintWriter out = response.getWriter();
             out.print(developerJsonString);
             out.flush();
         } catch (IOException e) {
@@ -110,7 +106,7 @@ public class DevelopersServlet extends HttpServlet {
         }
     }
 
-   // @Override
+    @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
@@ -131,6 +127,5 @@ public class DevelopersServlet extends HttpServlet {
             response.sendError(500);
             out.flush();
         }
-
     }
 }

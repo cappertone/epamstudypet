@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class JDBCSkillRepositoryTest {
     private Connection connection;
-    private static final String PROPERTY_PATH = "src/test/java/resources/db.properties";
+    private static final String PROPERTY_PATH = "src/test/java/resources/liquibase.properties";
     private JDBCSkillRepository repositoty;
     private DataSource dataSource;
 
@@ -29,9 +29,9 @@ public class JDBCSkillRepositoryTest {
             Properties properties = new Properties();
             properties.load(inputStream);
             JdbcDataSource dataSource = new JdbcDataSource();
-            dataSource.setURL(properties.getProperty("db.url"));
-            dataSource.setUser(properties.getProperty("db.login"));
-            dataSource.setPassword(properties.getProperty("db.pass"));
+            dataSource.setURL(properties.getProperty("url"));
+            dataSource.setUser(properties.getProperty("username"));
+            dataSource.setPassword(properties.getProperty("password"));
             this.dataSource = dataSource;
             connection = this.dataSource.getConnection();
             connection.setCatalog("use studypet");

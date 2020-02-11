@@ -1,8 +1,6 @@
 package com.epam.petproject.model;
 
 public enum AccountStatus {
-
-
     ACTIVE {
         public String parseType(AccountStatus accountStatus) {
             return String.valueOf(ACTIVE);

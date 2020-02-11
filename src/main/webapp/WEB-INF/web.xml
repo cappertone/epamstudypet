@@ -1,25 +1,35 @@
-<!DOCTYPE web-app PUBLIC
-        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         metadata-complete="false"
+         version="4.0">
+<display-name>petServlet</display-name>
+<servlet>
+    <servlet-name>DevelopersServlet</servlet-name>
+    <servlet-class>com.epam.petproject.rest.DevelopersServlet</servlet-class>
+</servlet>
+<servlet>
+    <servlet-name>AccountsServlet</servlet-name>
+    <servlet-class>com.epam.petproject.rest.AccountsServlet</servlet-class>
+</servlet>
+<servlet>
+    <servlet-name>SkillsServlet</servlet-name>
+    <servlet-class>com.epam.petproject.rest.SkillsServlet</servlet-class>
+</servlet>
 
-<web-app>
-    <display-name>petServlet</display-name>
 
-    <servlet>
-        <servlet-name>DevelopersServlet</servlet-name>
-        <servlet-class>com.epam.petproject.rest.DevelopersServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>SimpleServlet</servlet-name>
-        <servlet-class>com.epam.petproject.rest.SimpleServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>SimpleServlet</servlet-name>
-        <url-pattern>/s</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DevelopersServlet</servlet-name>
-        <url-pattern>/developers</url-pattern>
-    </servlet-mapping>
+<servlet-mapping>
+    <servlet-name>DevelopersServlet</servlet-name>
+    <url-pattern>/developers</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+    <servlet-name>AccountsServlet</servlet-name>
+    <url-pattern>/accounts</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+    <servlet-name>SkillsServlet</servlet-name>
+    <url-pattern>/skills</url-pattern>
+</servlet-mapping>
 </web-app>
